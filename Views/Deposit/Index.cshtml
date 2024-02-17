@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Deposit>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	// TODO: Скоріш всього ці функції варто перенести в модель Deposit
+	string GetReplenishmentText(bool replenishment)
+	{
+		return replenishment ? "Так" : "Ні";
+	}
+
+	string GetTerms(Deposit deposit)
+	{
+		var terms = "";
+		foreach (var term in deposit.Term)
+		{
+			terms += term.NumberMonths + " та ";
+		}
+		terms = terms.TrimEnd(' ', 'т', 'а');
+
+		return terms;
+	}
+
+	string GetRateClosure(double? rateClosure)
+	{
+		return rateClosure?.ToString() ?? "-";
+	}
+}
+
+
+<div id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2> Оберіть бажаний депозит</h2>
+		</header>
+		<div class="table-wrapper">
+			<table class="alt">
+				<thead>
+					<tr>
+						<th rowspan="2">Назва</th>
+						<th rowspan="2">Поповнення</th>
+						<th rowspan="2">Виплата процентів</th>
+						<th rowspan="2">Термін, міс</th>
+						<th colspan="2">Ставка річних</th>
+					</tr>
+					<tr>
+						<th>Без дострокового закриття</th>
+						<th>З достроковим закриттям</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>@item.Title<br/>@item.ShortDescription</td>
+							<td>@GetReplenishmentText(item.Replenishment)</td>
+							<td>@item.GetInterestRateInString()</td>
+							<td>@GetTerms(item)</td>
+							<td>@GetRateClosure(item.InterestRateNoEarlyClosure)</td>
+							<td>@GetRateClosure(item.InterestRateEarlyClosure)</td>
+							<td class="middle-align">
+								<a asp-controller="Deposit" asp-action="Detail" asp-route-id="@item.Id" class="button small">Оформити</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

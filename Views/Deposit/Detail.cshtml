@@ -1,0 +1,58 @@
+﻿@model Deposit
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div id="main" class="wrapper style1">
+	<div class="container">
+		<!-- Content -->
+		<section id="content">
+			<h2>Офрмлення депозиту</h2>
+			<h4>Оберіть ставку та умови договору:</h4>
+			<section>
+				@* <div class="row gtr-uniform gtr-50"> *@
+				@if (Model.InterestRateNoEarlyClosure != null)
+				{
+					<div class="col-4 col-12-medium">
+						<input type="radio" id="priority-low" name="priority" checked="">
+						<label for="priority-low">
+							@Model.InterestRateNoEarlyClosure% річних<br />
+							для вкладу без дострокового розривання
+						</label>
+					</div>
+				}
+
+				@if (Model.InterestRateEarlyClosure != null)
+				{
+					<div class="col-4 col-12-medium">
+						<input type="radio" id="priority-normal" name="priority">
+						<label for="priority-normal">
+							@Model.InterestRateEarlyClosure% річних<br />
+							для вкладу з достроковим розриванняи
+						</label>
+					</div>
+				}
+				<a href="#" class="button primary">Далі</a>
+				@* </div> *@
+			</section>
+			@*Наступний крок *@
+			@*<h4>Вибраний депозит:</h4>
+			<div style="display: flex;">
+			<div>Назва: </div>
+			<div style="padding-left: 10px;"> @Model.Title </div>
+			</div>
+			<div style="display: flex;">
+				<div>Ставка:</div>
+				<div style="padding-left: 10px;">
+					<div>
+						<div>3% річних </div>
+						<div>для вкладу без дострокового розривання</div>
+					</div>
+				</div>
+			</div>
+			*@
+		</section>
+	</div>
+</div>
