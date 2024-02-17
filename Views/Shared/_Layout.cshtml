@@ -1,23 +1,23 @@
 ﻿<!DOCTYPE html>
+
 <html lang="en">
-<head>
-    @await Html.PartialAsync("MetatagsPartial")
-    @await Html.PartialAsync("CssPartial")
+    <head>
+        @await Html.PartialAsync("MetatagsPartial")
+        @await Html.PartialAsync("CssPartial")
+    </head>
+    <body class="is-preload">
+        <div id="page-wrapper">
+            @await Html.PartialAsync("HeaderPartial")
 
-</head>
-<body class="is-preload">
-    <div id="page-wrapper">
-        @await Html.PartialAsync("HeaderPartial")
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
 
-        <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
+            @await Html.PartialAsync("FooterPartial")
         </div>
 
-        @await Html.PartialAsync("FooterPartial")
-    </div>
-
-    @await Html.PartialAsync("ScriptsPartial")
-</body>
+        @await Html.PartialAsync("ScriptsPartial")
+    </body>
 </html>
