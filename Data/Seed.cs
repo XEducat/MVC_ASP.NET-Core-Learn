@@ -5,116 +5,176 @@ using MVC_ASP.NET_Core_Learn.Models;
 
 namespace MVC_ASP.NET_Core_Learn.Data
 {
-	public class Seed
+    public class Seed
 	{
-        public static void Initialize(AppDbContext context)
-        {
-            context.Database.Migrate(); // Убедимся, что база данных создана
+		public static void Initialize(IApplicationBuilder applicationBuilder)
+		{
+			using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+			{
+				var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+				context.Database.Migrate(); // Убедимся, что база данных создана
 
-            if (context.Deposits.Any())
-            {
-                // База данных уже заполнена, поэтому не нужно ничего делать
-                return;
-            }
+				if (context.Deposits.Any())
+				{
+					// База данных уже заполнена, поэтому не нужно ничего делать
+					return;
+				}
 
-            // Начальные данные для депозитов
-            var seedDeposits = new List<Deposit>
-            {
-                new Deposit
-                {
-                    Title = "Депозит 1",
-                    ShortDescription = "Короткий опис депозиту 1",
-                    Replenishment = true,
-                    InterestRate = InterestRate.WhenReturning,
-                    Term = new List<DepositTerm>
-                    {
-                        new DepositTerm { NumberMonths = 12 },
-                        new DepositTerm { NumberMonths = 24 }
-                    },
-                    InterestRateNoEarlyClosure = 4.0,
-                    InterestRateEarlyClosure = 4.5
-                },
-                new Deposit
-                {
-                    Title = "Депозит 2",
-                    ShortDescription = "Короткий опис депозиту 2",
-                    Replenishment = false,
-                    InterestRate = InterestRate.Monthly,
-                    Term = new List<DepositTerm>
-                    {
-                        new DepositTerm { NumberMonths = 6 },
-                        new DepositTerm { NumberMonths = 12 }
-                    },
-                    InterestRateNoEarlyClosure = null,
-                    InterestRateEarlyClosure = 5.0
-                },
-	            new Deposit
-	            {
-		            Title = "Депозит 3",
-		            ShortDescription = "Короткий опис депозиту 3",
-		            Replenishment = true,
-		            InterestRate = InterestRate.Monthly,
-		            Term = new List<DepositTerm>
-		            {
-			            new DepositTerm { NumberMonths = 3 },
-			            new DepositTerm { NumberMonths = 6 }
-		            },
-		            InterestRateNoEarlyClosure = 3.5,
-		            InterestRateEarlyClosure = 4.0
-	            },
-	            new Deposit
-	            {
-		            Title = "Депозит 4",
-		            ShortDescription = "Короткий опис депозиту 4",
-		            Replenishment = false,
-		            InterestRate = InterestRate.WhenReturning,
-		            Term = new List<DepositTerm>
-		            {
-			            new DepositTerm { NumberMonths = 6 },
-			            new DepositTerm { NumberMonths = 12 },
-			            new DepositTerm { NumberMonths = 24 }
-		            },
-		            InterestRateNoEarlyClosure = 3.0,
-		            InterestRateEarlyClosure = 3.5
-	            },
-	            new Deposit
-	            {
-		            Title = "Депозит 5",
-		            ShortDescription = "Короткий опис депозиту 5",
-		            Replenishment = true,
-		            InterestRate = InterestRate.Monthly,
-		            Term = new List<DepositTerm>
-		            {
-			            new DepositTerm { NumberMonths = 6 },
-			            new DepositTerm { NumberMonths = 12 },
-			            new DepositTerm { NumberMonths = 18 }
-		            },
-		            InterestRateNoEarlyClosure = 4.0,
-		            InterestRateEarlyClosure = 4.5
-	            }
-			};
+				// Начальные данные для депозитов
+				var seedDeposits = new List<Deposit>
+				{
+					new Deposit
+					{
+						Title = "Депозит 1",
+						ShortDescription = "Короткий опис депозиту 1",
+						Replenishment = true,
+						InterestRate = InterestRate.WhenReturning,
+						Term = new List<DepositTerm>
+						{
+							new DepositTerm { NumberMonths = 12 },
+							new DepositTerm { NumberMonths = 24 }
+						},
+						InterestRateNoEarlyClosure = 4.0,
+						InterestRateEarlyClosure = 4.5
+					},
+					new Deposit
+					{
+						Title = "Депозит 2",
+						ShortDescription = "Короткий опис депозиту 2",
+						Replenishment = false,
+						InterestRate = InterestRate.Monthly,
+						Term = new List<DepositTerm>
+						{
+							new DepositTerm { NumberMonths = 6 },
+							new DepositTerm { NumberMonths = 12 }
+						},
+						InterestRateNoEarlyClosure = null,
+						InterestRateEarlyClosure = 5.0
+					},
+					new Deposit
+					{
+						Title = "Депозит 3",
+						ShortDescription = "Короткий опис депозиту 3",
+						Replenishment = true,
+						InterestRate = InterestRate.Monthly,
+						Term = new List<DepositTerm>
+						{
+							new DepositTerm { NumberMonths = 3 },
+							new DepositTerm { NumberMonths = 6 }
+						},
+						InterestRateNoEarlyClosure = 3.5,
+						InterestRateEarlyClosure = 4.0
+					},
+					new Deposit
+					{
+						Title = "Депозит 4",
+						ShortDescription = "Короткий опис депозиту 4",
+						Replenishment = false,
+						InterestRate = InterestRate.WhenReturning,
+						Term = new List<DepositTerm>
+						{
+							new DepositTerm { NumberMonths = 6 },
+							new DepositTerm { NumberMonths = 12 },
+							new DepositTerm { NumberMonths = 24 }
+						},
+						InterestRateNoEarlyClosure = 3.0,
+						InterestRateEarlyClosure = 3.5
+					},
+					new Deposit
+					{
+						Title = "Депозит 5",
+						ShortDescription = "Короткий опис депозиту 5",
+						Replenishment = true,
+						InterestRate = InterestRate.Monthly,
+						Term = new List<DepositTerm>
+						{
+							new DepositTerm { NumberMonths = 6 },
+							new DepositTerm { NumberMonths = 12 },
+							new DepositTerm { NumberMonths = 18 }
+						},
+						InterestRateNoEarlyClosure = 4.0,
+						InterestRateEarlyClosure = 4.5
+					}
+				};
+
+				// Добавляем начальные данные в базу данных
+				context.Deposits.AddRange(seedDeposits);
+				context.SaveChanges();
+			}
+		}
 
 
-            // Добавляем начальные данные в базу данных
-            context.Deposits.AddRange(seedDeposits);
-            context.SaveChanges();
-        }
+		public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
+		{
+			using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+			{
+				//Roles
+				var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+				if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+					await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+				if (!await roleManager.RoleExistsAsync(UserRoles.User))
+					await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
-        //public void AddNewUser()
-        //{
-        //    // Создать нового покупателя
-        //    User customer = new User
-        //    {
-        //        Mail = "Иван",
-        //        Birdthday = DateTime.Now,
-        //    };
+				//Users
+				var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+				string adminUserEmail = "vadimSdeveloper@gmail.com";
 
-        //    // Добавить в DbSet
-        //    Users.Add(customer);
+				var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
+				if (adminUser == null)
+				{
+					var newAdminUser = new AppUser()
+					{
+						UserName = "vadimS",
+						Email = adminUserEmail,
+						EmailConfirmed = true,
+						Address = new Address()
+						{
+							Street = "123 Main St",
+							City = "Charlotte",
+							State = "NC"
+						}
+					};
+					await userManager.CreateAsync(newAdminUser, "Coding@1234?");
+					await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+				}
 
-        //    // Сохранить изменения в базе данных
-        //    SaveChanges();
-        //}
-    }
+				string appUserEmail = "user@etickets.com";
+
+				var appUser = await userManager.FindByEmailAsync(appUserEmail);
+				if (appUser == null)
+				{
+					var newAppUser = new AppUser()
+					{
+						UserName = "app-user",
+						Email = appUserEmail,
+						EmailConfirmed = true,
+						Address = new Address()
+						{
+							Street = "123 Main St",
+							City = "Charlotte",
+							State = "NC"
+						}
+					};
+					await userManager.CreateAsync(newAppUser, "Coding@1234?");
+					await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
+				}
+			}
+		}
+		//public void AddNewUser()
+		//{
+		//    // Создать нового покупателя
+		//    User customer = new User
+		//    {
+		//        Mail = "Иван",
+		//        Birdthday = DateTime.Now,
+		//    };
+
+		//    // Добавить в DbSet
+		//    Users.Add(customer);
+
+		//    // Сохранить изменения в базе данных
+		//    SaveChanges();
+		//}
+	}
 }
