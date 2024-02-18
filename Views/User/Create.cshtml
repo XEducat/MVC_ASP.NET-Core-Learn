@@ -6,11 +6,11 @@
 }
 
 <div id="registation" class="wrapper style1">
-    <form class="registation-form" method="post" asp-action="Create">
+    <form class="registation-form" method="post"> @* asp-action="Create"> *@
         <div class="form-group">
-            <label asp-for="Mail">Email address</label>
-            <input asp-for="Mail" class="form-control" placeholder="Enter email">
-            <span asp-validation-for="Mail" class="text-danger"></span>
+            <label asp-for="Email">Email address</label>
+            <input asp-for="Email" class="form-control" placeholder="Enter email">
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Birdthday">Birth date</label>
@@ -21,9 +21,6 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div> *@
-        <div>
-
-        </div>
         <button type="submit" class="button primary fit" style="margin-top:20px">Зареструватися</button>
     </form>
 </div>
