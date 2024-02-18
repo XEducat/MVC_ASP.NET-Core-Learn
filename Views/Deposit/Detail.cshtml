@@ -11,7 +11,7 @@
 		<section id="content">
 			<h2>Офрмлення депозиту</h2>
 			<h4>Оберіть ставку та умови договору:</h4>
-			<section>
+			<section id="first-step">
 				@* <div class="row gtr-uniform gtr-50"> *@
 				@if (Model.InterestRateNoEarlyClosure != null)
 				{
@@ -34,25 +34,64 @@
 						</label>
 					</div>
 				}
-				<a href="#" class="button primary">Далі</a>
+				<a href="#" class="button primary" onclick="showNextStep()">Далі</a>
 				@* </div> *@
 			</section>
-			@*Наступний крок *@
-			@*<h4>Вибраний депозит:</h4>
-			<div style="display: flex;">
-			<div>Назва: </div>
-			<div style="padding-left: 10px;"> @Model.Title </div>
-			</div>
-			<div style="display: flex;">
-				<div>Ставка:</div>
-				<div style="padding-left: 10px;">
-					<div>
-						<div>3% річних </div>
-						<div>для вкладу без дострокового розривання</div>
+			<section id="second-step" style="display: none;">
+				<h4>Вибраний депозит:</h4>
+				<div style="display: flex;">
+					<div>Назва: </div>
+					<div style="padding-left: 10px;"> @Model.Title </div>
+				</div>
+				<div style="display: flex;">
+					<div>Ставка:</div>
+					<div style="padding-left: 10px;">
+						<div>
+							<div>3% річних </div>
+							<div>для вкладу без дострокового розривання</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			*@
+				<hr>
+
+				<div>Виберіть строк</div>
+				<div style ="display: flex; margin-top: 10px">
+					<b>Строк(місяць):</b>
+					<div style="display: flex; margin-left: 20px">
+						@{
+							int index = 1;
+							foreach (var item in Model.Term)
+							{
+								<div class="col-4 col-12-medium">
+									<input type="radio" id="term@(index)" name="priority">
+									<label for="term@(index)">
+										@item.NumberMonths
+									</label>
+								</div>
+								index++;
+							}
+						}
+					</div>
+				</div>
+
+				<hr>
+				<h4>Дані для оформлення:</h4>
+				<h6>Введіть суму</h6>
+				<div style="display: flex; align-items: center;">
+					<div class="col-6 col-12-xsmall">
+						<input type="text" name="name" id="name" value="" placeholder="100.00">
+					</div>
+					<p style="margin: 0 0 0 10pt;">UAH</p>
+				</div>
+			</section>
 		</section>
 	</div>
 </div>
+
+<script>
+	function showNextStep() {
+		document.getElementById("first-step").style.display = "none";
+		document.getElementById("second-step").style.display = "block";
+		document.getElementById("term1").checked = true;
+	}
+</script>

@@ -43,7 +43,7 @@
 						<th rowspan="2">Термін, міс</th>
 						<th colspan="2">Ставка річних</th>
 					</tr>
-					<tr>
+					<tr style="font-size: 11pt">
 						<th>Без дострокового закриття</th>
 						<th>З достроковим закриттям</th>
 					</tr>
@@ -52,12 +52,12 @@
 					@foreach (var item in Model)
 					{
 						<tr>
-							<td>@item.Title<br/>@item.ShortDescription</td>
+							<td><b>@item.Title</b><br />@item.ShortDescription</td>
 							<td>@GetReplenishmentText(item.Replenishment)</td>
 							<td>@item.GetInterestRateInString()</td>
 							<td>@GetTerms(item)</td>
-							<td>@GetRateClosure(item.InterestRateNoEarlyClosure)</td>
-							<td>@GetRateClosure(item.InterestRateEarlyClosure)</td>
+							<td>@GetRateClosure(item.InterestRateNoEarlyClosure)%</td>
+							<td>@GetRateClosure(item.InterestRateEarlyClosure)%</td>
 							<td class="middle-align">
 								<a asp-controller="Deposit" asp-action="Detail" asp-route-id="@item.Id" class="button small">Оформити</a>
 							</td>
