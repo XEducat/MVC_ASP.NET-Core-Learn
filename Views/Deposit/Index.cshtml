@@ -4,24 +4,24 @@
 *@
 @{
 	// TODO: Скоріш всього ці функції варто перенести в модель Deposit
-	string GetReplenishmentText(bool replenishment)
+	string ComposeReplenishmentString(bool replenishment)
 	{
 		return replenishment ? "Так" : "Ні";
 	}
 
-	string GetTerms(Deposit deposit)
+	// Формує строку термінів
+	string ComposeTermString(Deposit deposit)
 	{
-		var terms = "";
-		foreach (var term in deposit.Term)
-		{
-			terms += term.NumberMonths + " та ";
-		}
-		terms = terms.TrimEnd(' ', 'т', 'а');
+		var terms = deposit.Term.Select(t => t.NumberMonths.ToString());
 
-		return terms;
+		if (terms.Count() == 1)
+			return terms.First();
+
+		var delimiter = terms.Count() == 2 ? " та " : ", ";
+		return string.Join(delimiter, terms);
 	}
 
-	string GetRateClosure(double? rateClosure)
+	string ComposeRateClosureString(double? rateClosure)
 	{
 		return rateClosure?.ToString() ?? "-";
 	}
@@ -53,11 +53,11 @@
 					{
 						<tr>
 							<td><b>@item.Title</b><br />@item.ShortDescription</td>
-							<td>@GetReplenishmentText(item.Replenishment)</td>
+							<td>@ComposeReplenishmentString(item.Replenishment)</td>
 							<td>@item.GetInterestRateInString()</td>
-							<td>@GetTerms(item)</td>
-							<td>@GetRateClosure(item.InterestRateNoEarlyClosure)%</td>
-							<td>@GetRateClosure(item.InterestRateEarlyClosure)%</td>
+							<td>@ComposeTermString(item)</td>
+							<td>@ComposeRateClosureString(item.InterestRateNoEarlyClosure)%</td>
+							<td>@ComposeRateClosureString(item.InterestRateEarlyClosure)%</td>
 							<td class="middle-align">
 								<a asp-controller="Deposit" asp-action="Detail" asp-route-id="@item.Id" class="button small">Оформити</a>
 							</td>

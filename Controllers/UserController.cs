@@ -24,7 +24,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Create(AppUser user)
         {
             if (!ModelState.IsValid)
             {

@@ -14,19 +14,19 @@ namespace MVC_ASP.NET_Core_Learn.Repository
 			_context = appDbContext;
 		}
 
-        public bool Add(User user)
+        public bool Add(AppUser user)
         {
             _context.Add(user);
             return Save();
         }
 
-        public bool Delete(User user)
+        public bool Delete(AppUser user)
         {
             _context.Remove(user);
             return Save();
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<AppUser>> GetAll()
         {
             return await _context.Users.ToListAsync();
         }
@@ -42,7 +42,7 @@ namespace MVC_ASP.NET_Core_Learn.Repository
             return saved > 0 ? true : false;
         }
 
-        public bool Update(User user)
+        public bool Update(AppUser user)
         {
             _context.Update(user);
             return Save();
