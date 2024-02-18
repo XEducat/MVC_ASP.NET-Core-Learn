@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using MVC_ASP.NET_Core_Learn.Data;
+using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
+using MVC_ASP.NET_Core_Learn.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IDepositRepository, DepositRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

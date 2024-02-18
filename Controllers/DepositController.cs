@@ -1,31 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_ASP.NET_Core_Learn.Data;
+using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
 using MVC_ASP.NET_Core_Learn.Models;
 
 namespace MVC_ASP.NET_Core_Learn.Controllers
 {
 	public class DepositController : Controller
 	{
-		private readonly AppDbContext _context;
+		private readonly IDepositRepository _depositRepository;
 
-		public DepositController(AppDbContext context)
+		public DepositController(AppDbContext context, IDepositRepository depositRepository)
         {
-			_context = context;
+			_depositRepository = depositRepository;
 		}
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
 		{
-			var deposits = _context.Deposits.Include(t => t.Term).ToList();
+			IEnumerable<Deposit> deposits = await _depositRepository.GetAll();
 
 			return View(deposits);
 		}
 
 
-		public IActionResult Detail(int id)
+		public async Task<IActionResult> Detail(int id)
 		{
-			Deposit deposit = _context.Deposits.FirstOrDefault(t => t.Id == id);
-			//UserTask deposit = _context.UserTusks.FirstOrDefault(t => t.Id == id);
+			Deposit deposit = await _depositRepository.GetByIdAsync(id);
 
 			return View(deposit);
 		}

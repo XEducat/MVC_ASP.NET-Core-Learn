@@ -8,8 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Iterfaces\" />
-    <Folder Include="Repository\" />
     <Folder Include="wwwroot\images\icons\" />
   </ItemGroup>
 
