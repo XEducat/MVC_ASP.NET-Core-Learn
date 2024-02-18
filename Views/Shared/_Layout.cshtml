@@ -9,11 +9,7 @@
         <div id="page-wrapper">
             @await Html.PartialAsync("HeaderPartial")
 
-            <div class="container">
-                <main role="main" class="pb-3">
-                    @RenderBody()
-                </main>
-            </div>
+            @RenderBody()
 
             @await Html.PartialAsync("FooterPartial")
         </div>
