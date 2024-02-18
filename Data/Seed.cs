@@ -45,10 +45,55 @@ namespace MVC_ASP.NET_Core_Learn.Data
                         new DepositTerm { NumberMonths = 6 },
                         new DepositTerm { NumberMonths = 12 }
                     },
-                    InterestRateNoEarlyClosure = 4.5,
+                    InterestRateNoEarlyClosure = null,
                     InterestRateEarlyClosure = 5.0
-                }
-            };
+                },
+	            new Deposit
+	            {
+		            Title = "Депозит 3",
+		            ShortDescription = "Короткий опис депозиту 3",
+		            Replenishment = true,
+		            InterestRate = InterestRate.Monthly,
+		            Term = new List<DepositTerm>
+		            {
+			            new DepositTerm { NumberMonths = 3 },
+			            new DepositTerm { NumberMonths = 6 }
+		            },
+		            InterestRateNoEarlyClosure = 3.5,
+		            InterestRateEarlyClosure = 4.0
+	            },
+	            new Deposit
+	            {
+		            Title = "Депозит 4",
+		            ShortDescription = "Короткий опис депозиту 4",
+		            Replenishment = false,
+		            InterestRate = InterestRate.WhenReturning,
+		            Term = new List<DepositTerm>
+		            {
+			            new DepositTerm { NumberMonths = 6 },
+			            new DepositTerm { NumberMonths = 12 },
+			            new DepositTerm { NumberMonths = 24 }
+		            },
+		            InterestRateNoEarlyClosure = 3.0,
+		            InterestRateEarlyClosure = 3.5
+	            },
+	            new Deposit
+	            {
+		            Title = "Депозит 5",
+		            ShortDescription = "Короткий опис депозиту 5",
+		            Replenishment = true,
+		            InterestRate = InterestRate.Monthly,
+		            Term = new List<DepositTerm>
+		            {
+			            new DepositTerm { NumberMonths = 6 },
+			            new DepositTerm { NumberMonths = 12 },
+			            new DepositTerm { NumberMonths = 18 }
+		            },
+		            InterestRateNoEarlyClosure = 4.0,
+		            InterestRateEarlyClosure = 4.5
+	            }
+			};
+
 
             // Добавляем начальные данные в базу данных
             context.Deposits.AddRange(seedDeposits);
