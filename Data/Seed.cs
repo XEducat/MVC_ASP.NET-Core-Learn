@@ -161,20 +161,5 @@ namespace MVC_ASP.NET_Core_Learn.Data
 				}
 			}
 		}
-		//public void AddNewUser()
-		//{
-		//    // Создать нового покупателя
-		//    User customer = new User
-		//    {
-		//        Mail = "Иван",
-		//        Birdthday = DateTime.Now,
-		//    };
-
-		//    // Добавить в DbSet
-		//    Users.Add(customer);
-
-		//    // Сохранить изменения в базе данных
-		//    SaveChanges();
-		//}
 	}
 }
