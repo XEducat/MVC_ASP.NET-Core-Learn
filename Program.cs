@@ -7,7 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add services to the dependency container for working with repositories.
 builder.Services.AddScoped<IDepositRepository, DepositRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Configure the application's DbContext to use SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

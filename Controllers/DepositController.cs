@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MVC_ASP.NET_Core_Learn.Data;
 using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
 using MVC_ASP.NET_Core_Learn.Models;
 
@@ -10,7 +8,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 	{
 		private readonly IDepositRepository _depositRepository;
 
-		public DepositController(AppDbContext context, IDepositRepository depositRepository)
+		public DepositController(IDepositRepository depositRepository)
         {
 			_depositRepository = depositRepository;
 		}
@@ -28,6 +26,11 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 			Deposit deposit = await _depositRepository.GetByIdAsync(id);
 
 			return View(deposit);
+		}
+
+		public IActionResult Create()
+		{
+			return View();
 		}
 	}
 }
