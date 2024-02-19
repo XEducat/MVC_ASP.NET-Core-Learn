@@ -6,6 +6,8 @@ namespace MVC_ASP.NET_Core_Learn.Data.Iterfaces
     {
         Task<IEnumerable<Deposit>> GetAll();
         Task<Deposit> GetByIdAsync(int Id);
+        Task<Deposit> GetByIdAsyncNoTraking(int Id);
+
 
         bool Add(Deposit deposit);
         bool Update(Deposit deposit);

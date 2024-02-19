@@ -36,7 +36,12 @@ namespace MVC_ASP.NET_Core_Learn.Repository
 			return await _context.Deposits.Include(t => t.Terms).FirstOrDefaultAsync(d => d.Id == Id);
 		}
 
-		public bool Save()
+        public async Task<Deposit> GetByIdAsyncNoTraking(int Id)
+        {
+            return await _context.Deposits.Include(t => t.Terms).AsNoTracking().FirstOrDefaultAsync(d => d.Id == Id);
+        }
+
+        public bool Save()
 		{
 			var saved = _context.SaveChanges();
 			return saved > 0 ? true : false;
