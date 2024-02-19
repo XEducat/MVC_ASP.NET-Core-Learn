@@ -29,7 +29,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						ShortDescription = "Короткий опис депозиту 1",
 						Replenishment = true,
 						InterestRate = InterestRate.WhenReturning,
-						Term = new List<DepositTerm>
+						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 12 },
 							new DepositTerm { NumberMonths = 24 }
@@ -43,7 +43,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						ShortDescription = "Короткий опис депозиту 2",
 						Replenishment = false,
 						InterestRate = InterestRate.Monthly,
-						Term = new List<DepositTerm>
+						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 6 },
 							new DepositTerm { NumberMonths = 12 }
@@ -57,7 +57,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						ShortDescription = "Короткий опис депозиту 3",
 						Replenishment = true,
 						InterestRate = InterestRate.Monthly,
-						Term = new List<DepositTerm>
+						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 3 },
 							new DepositTerm { NumberMonths = 6 }
@@ -71,7 +71,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						ShortDescription = "Короткий опис депозиту 4",
 						Replenishment = false,
 						InterestRate = InterestRate.WhenReturning,
-						Term = new List<DepositTerm>
+						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 6 },
 							new DepositTerm { NumberMonths = 12 },
@@ -86,7 +86,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						ShortDescription = "Короткий опис депозиту 5",
 						Replenishment = true,
 						InterestRate = InterestRate.Monthly,
-						Term = new List<DepositTerm>
+						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 6 },
 							new DepositTerm { NumberMonths = 12 },

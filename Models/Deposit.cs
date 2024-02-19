@@ -14,7 +14,7 @@ namespace MVC_ASP.NET_Core_Learn.Models
         public string ShortDescription { get; set; }         // Короткий опис депозиту
         public bool Replenishment { get; set; }              // Поповнення
         public InterestRate InterestRate { get; set; }       // Виплата процентів
-        public ICollection<DepositTerm> Term { get; set; }   // Термін депозиту
+        public IEnumerable<DepositTerm> Terms { get; set; }   // Термін депозиту
         public double? InterestRateNoEarlyClosure { get; set; } // Ставка без дострокового закриття
         public double? InterestRateEarlyClosure { get; set; }   // Ставка з достроковим закриттям
 

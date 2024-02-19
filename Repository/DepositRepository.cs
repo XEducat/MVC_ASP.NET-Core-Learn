@@ -26,14 +26,14 @@ namespace MVC_ASP.NET_Core_Learn.Repository
 			return Save();
 		}
 
-		public async Task<IEnumerable<Deposit>> GetAll()
+        public async Task<IEnumerable<Deposit>> GetAll()
 		{
-			return await _context.Deposits.Include(t => t.Term).ToListAsync();
+			return await _context.Deposits.Include(t => t.Terms).ToListAsync();
 		}
 
 		public async Task<Deposit> GetByIdAsync(int Id)
 		{
-			return await _context.Deposits.Include(t => t.Term).FirstOrDefaultAsync(d => d.Id == Id);
+			return await _context.Deposits.Include(t => t.Terms).FirstOrDefaultAsync(d => d.Id == Id);
 		}
 
 		public bool Save()
