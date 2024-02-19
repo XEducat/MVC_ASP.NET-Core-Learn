@@ -1,0 +1,54 @@
+﻿@using MVC_ASP.NET_Core_Learn.Data.Enums
+@using MVC_ASP.NET_Core_Learn.ViewModels
+@model EditDepositViewModel
+
+<div class="container">
+    <form method="post" asp-action="Edit" enctype="multipart/form-data">
+        <input type="hidden" value="AddressId" id="AddressId" />
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" placeholder="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ShortDescription"></label>
+            <input asp-for="ShortDescription" class="form-control" placeholder="ShortDescription">
+            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Replenishment" class="form-control">
+            <label asp-for="Replenishment"></label>
+            <span asp-validation-for="Replenishment" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="InterestRate"></label>
+            <select asp-for="InterestRate" asp-items="@Html.GetEnumSelectList<InterestRate>()" class="form-control">
+                <option selected="selected" value="">--Select--</option>
+            </select>
+            <span asp-validation-for="InterestRate" class="text-danger"></span>
+        </div>
+
+      @*TODO: Додати зміну DepositTerm *@
+        <div class="form-group" hidden="true">
+            <label asp-for="Term"></label>
+            @foreach (var term in Model.Term)
+            {
+                <input type="hidden" name="Terms.Index" value="@term.Id" />
+                <input asp-for="@term.NumberMonths" value="@term.NumberMonths" onwheel="this.blur()" class="form-control" />
+            }
+        </div>
+
+        <div class="form-group">
+            <label asp-for="InterestRateNoEarlyClosure"></label>
+            <input asp-for="InterestRateNoEarlyClosure" class="form-control">
+            <span asp-validation-for="InterestRateNoEarlyClosure" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="InterestRateEarlyClosure"></label>
+            <input asp-for="InterestRateEarlyClosure" class="form-control">
+            <span asp-validation-for="InterestRateEarlyClosure" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="button primary">Submit</button>
+    </form>
+</div>

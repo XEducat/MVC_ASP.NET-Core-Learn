@@ -2840,34 +2840,34 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* Button */
-
-	input[type="submit"],
-	input[type="reset"],
-	input[type="button"],
-	.button {
-		-moz-appearance: none;
-		-webkit-appearance: none;
-		-ms-appearance: none;
-		appearance: none;
-		-moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-		-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-		-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-		transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-		background-color: transparent;
-		border-radius: 4px;
-		border: 0;
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
-		color: #ffffff !important;
-		cursor: pointer;
-		display: inline-block;
-		font-weight: 300;
-		height: 3em;
-		line-height: 3em;
-		padding: 0 2.25em;
-		text-align: center;
-		text-decoration: none;
-		white-space: nowrap;
-	}
+input[type="number"],
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+.button {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+	-moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+	-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+	-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+	transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+	background-color: transparent;
+	border-radius: 4px;
+	border: 0;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+	color: #ffffff !important;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: 300;
+	height: 3em;
+	line-height: 3em;
+	padding: 0 2.25em;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+}
 
 		input[type="submit"]:hover, input[type="submit"]:active,
 		input[type="reset"]:hover,
@@ -2879,6 +2879,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 			box-shadow: inset 0 0 0 1px #e44c65;
 			color: #e44c65 !important;
 		}
+
 
 		input[type="submit"]:active,
 		input[type="reset"]:active,
@@ -4168,4 +4169,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .button.primary.fit {
 	width: 40%;
+}
+
+.admin-td {
+	width: fit-content;
+}
+
+.admin-td .button.primary.small {
+	width: 80%;
+	margin: 2px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	appearance: none;
 }
