@@ -60,10 +60,10 @@
 					@foreach (var item in Model)
 					{
 						<tr>
-							<td class="admin-td">
-								<a asp-controller="Deposit" asp-action="Edit" asp-route-id="@item.Id" class="button primary small">Змінити</a>
-								<a class="button primary small">Видалити</a>
-							</td>
+								<td class="admin-td">
+									<a asp-controller="Deposit" asp-action="Edit" asp-route-id="@item.Id" class="button primary small">Змінити</a>
+									<a asp-controller="Deposit" asp-action="Delete" asp-route-id="@item.Id" class="button primary small">Видалити</a>
+								</td>
 							<td><b>@item.Title</b><br />@item.ShortDescription</td>
 							<td>@ComposeReplenishmentString(item.Replenishment)</td>
 							<td>@item.GetInterestRateInString()</td>

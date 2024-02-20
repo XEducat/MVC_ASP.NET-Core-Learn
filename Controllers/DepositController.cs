@@ -10,11 +10,11 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		private readonly IDepositRepository _depositRepository;
 
 		public DepositController(IDepositRepository depositRepository)
-        {
+		{
 			_depositRepository = depositRepository;
 		}
 
-        public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index()
 		{
 			IEnumerable<Deposit> deposits = await _depositRepository.GetAll();
 
@@ -37,7 +37,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		public async Task<IActionResult> Edit(int id)
 		{
 			var deposit = await _depositRepository.GetByIdAsync(id);
-			if(deposit == null) return View("Error");
+			if (deposit == null) return View("Error");
 			var depositVM = new EditDepositViewModel()
 			{
 				Id = id,
@@ -46,7 +46,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 				Replenishment = deposit.Replenishment,
 				InterestRate = deposit.InterestRate,
 				Term = deposit.Terms,
-                InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
+				InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
 				InterestRateNoEarlyClosure = deposit.InterestRateNoEarlyClosure,
 			};
 
@@ -54,12 +54,12 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		}
 
 		[HttpPost]
-        public async Task<IActionResult> Edit(int id, EditDepositViewModel depositVM)
+		public async Task<IActionResult> Edit(int id, EditDepositViewModel depositVM)
 		{
 			if (!ModelState.IsValid)
 			{
-                ModelState.AddModelError("", "Failed to edit deposit");
-				return View("Edit", depositVM);	
+				ModelState.AddModelError("", "Failed to edit deposit");
+				return View("Edit", depositVM);
 			}
 
 			var userDeposit = await _depositRepository.GetByIdAsyncNoTraking(id);
@@ -86,5 +86,18 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 				return View(depositVM);
 			}
 		}
-    }
+
+		public async Task<IActionResult> Delete(int id)
+		{
+			var userDeposit = await _depositRepository.GetByIdAsync(id);
+
+			if (userDeposit != null)
+			{
+				_depositRepository.Delete(userDeposit);
+				return RedirectToAction("Index");
+			}
+
+			return View("Index");
+		}
+	}
 }
