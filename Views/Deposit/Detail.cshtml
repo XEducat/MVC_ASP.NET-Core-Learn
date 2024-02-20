@@ -11,7 +11,7 @@
 		<section id="content">
 			<h2>Оформлення депозиту</h2>
 			<h4>Оберіть ставку та умови договору:</h4>
-			<section id="first-step">
+			<section id="deposit-step1">
 				@* <div class="row gtr-uniform gtr-50"> *@
 				@if (Model.InterestRateNoEarlyClosure != null)
 				{
@@ -37,7 +37,7 @@
 				<a href="#" class="button primary" onclick="showNextStep()">Далі</a>
 				@* </div> *@
 			</section>
-			<section id="second-step" style="display: none;">
+			<section id="deposit-step2" style="display: none;">
 				<h4>Вибраний депозит:</h4>
 				<div style="display: flex;">
 					<div>Назва: </div>
@@ -90,8 +90,8 @@
 
 <script>
 	function showNextStep() {
-		document.getElementById("first-step").style.display = "none";
-		document.getElementById("second-step").style.display = "block";
+		document.getElementById("deposit-step1").style.display = "none";
+		document.getElementById("deposit-step2").style.display = "block";
 		document.getElementById("term1").checked = true;
 	}
 </script>
