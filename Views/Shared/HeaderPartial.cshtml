@@ -22,7 +22,15 @@
                 </ul>
             </li>
             <li><a asp-controller="Deposit" asp-action="Index">Deposits</a></li>
-            <li><a asp-controller="Account" asp-action="Login" class="button">Sign In</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li><a class="button">Profile</a></li>
+                <li><a asp-controller="Account" asp-action="LogOut" class="button">Log Out</a></li>
+            }
+            else
+            {
+                <li><a asp-controller="Account" asp-action="Login" class="button">Sign In</a></li>
+            }
         </ul>
     </nav>
 </header>

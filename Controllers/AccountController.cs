@@ -100,8 +100,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             return RedirectToAction("Index", "Deposit");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> LogOut()
+		[HttpGet]
+		public async Task<IActionResult> LogOut()
 		{
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");

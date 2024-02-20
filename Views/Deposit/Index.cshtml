@@ -40,11 +40,35 @@
 		<header class="major">
 			<h2> Оберіть бажаний депозит</h2>
 		</header>
+
+		@* TODO: Додати модельне вікно для видалення, видиме тільки адміну*@
+		@* <!-- Модальне вікно для підтвердження видалення -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" hidden>
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+					</div>
+					<div class="modal-body">
+						<p>Modal Content Goes Here</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div> *@
+
 		<div class="table-wrapper">
 			<table class="alt">
 				<thead>
 					<tr>
-						<th rowspan="2">Опції колонки</th>
+						@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+						{
+							<th rowspan="2">Опції колонки</th>
+						}
 						<th rowspan="2">Назва</th>
 						<th rowspan="2">Поповнення</th>
 						<th rowspan="2">Виплата процентів</th>
@@ -60,10 +84,13 @@
 					@foreach (var item in Model)
 					{
 						<tr>
+							@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+							{
 								<td class="admin-td">
 									<a asp-controller="Deposit" asp-action="Edit" asp-route-id="@item.Id" class="button primary small">Змінити</a>
 									<a asp-controller="Deposit" asp-action="Delete" asp-route-id="@item.Id" class="button primary small">Видалити</a>
 								</td>
+							}
 							<td><b>@item.Title</b><br />@item.ShortDescription</td>
 							<td>@ComposeReplenishmentString(item.Replenishment)</td>
 							<td>@item.GetInterestRateInString()</td>
@@ -71,7 +98,14 @@
 							<td>@ComposeRateClosureString(item.InterestRateNoEarlyClosure)</td>
 							<td>@ComposeRateClosureString(item.InterestRateEarlyClosure)</td>
 							<td class="middle-align">
-								<a asp-controller="Deposit" asp-action="Detail" asp-route-id="@item.Id" class="button small">Оформити</a>
+								@if (User.Identity.IsAuthenticated)
+								{
+									<a asp-controller="Deposit" asp-action="Detail" asp-route-id="@item.Id" class="button small">Оформити</a>
+								}
+								else
+								{
+									<a asp-controller="Account" asp-action="Login" class="button small">Оформити</a>
+								}
 							</td>
 						</tr>
 					}
@@ -80,3 +114,11 @@
 		</div>
 	</div>
 </div>
+
+@* <script>
+	$(document).ready(function () {
+		$('#deleteButton').click(function () {
+			$('#myModal').removeAttr('hidden').modal('show');
+		});
+	});
+</script> *@
