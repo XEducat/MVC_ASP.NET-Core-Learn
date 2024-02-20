@@ -31,6 +31,8 @@
                             <div class="form-group">
                                 <label asp-for="Password" class="control-label"></label>
                                 <input asp-for="Password" class="form-control" />
+                                <input id="showPassword" type="checkbox" onchange="togglePasswordVisibility('Password')">
+                                <label for="showPassword">Show Password</label>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <br/>
