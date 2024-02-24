@@ -4,12 +4,12 @@ namespace MVC_ASP.NET_Core_Learn.Data.Iterfaces
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<AppUser>> GetAll();
-        //Task<User> GetByIdAsync(int Id);
+        Task<IEnumerable<AppUser>> GetAllUsers();
+        Task<AppUser> GetUserById(string Id);
 
-        bool Add(AppUser deposit);
-        bool Update(AppUser deposit);
-        bool Delete(AppUser deposit);
+        bool Add(AppUser user);
+        bool Update(AppUser user);
+        bool Delete(AppUser user);
         bool Save();
     }
 }

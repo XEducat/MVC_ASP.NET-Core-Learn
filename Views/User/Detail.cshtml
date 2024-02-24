@@ -1,0 +1,19 @@
+﻿@using MVC_ASP.NET_Core_Learn.ViewModels
+@model UserDetailViewModel
+
+<div class="wrapper style1">
+    <div class="container" style="width:50%">
+        <header class="major">
+            <h2> Профіль</h2>
+        </header>
+        <p><b>Логін:</b> @Model.UserName</p>
+        <p><b>Пошта:</b> @Model.Email</p>
+        <div style="text-align: center;">
+            <a asp-controller="Account" asp-action="LogOut" class="button">Log Out</a>
+
+            <form asp-controller="Account" asp-action="LogOut" method="get">
+                <button type="submit" class="button" onclick="return confirm('Are you sure you want to delete?')">Delete Account</button>
+            </form>
+        </div>
+    </div>
+</div>
