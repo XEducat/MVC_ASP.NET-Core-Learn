@@ -98,14 +98,7 @@
 							<td>@ComposeRateClosureString(item.InterestRateNoEarlyClosure)</td>
 							<td>@ComposeRateClosureString(item.InterestRateEarlyClosure)</td>
 							<td class="middle-align">
-								@if (User.Identity.IsAuthenticated)
-								{
-									<a asp-controller="Deposit" asp-action="Detail" asp-route-id="@item.Id" class="button small">Оформити</a>
-								}
-								else
-								{
-									<a asp-controller="Account" asp-action="Login" class="button small">Оформити</a>
-								}
+								<a asp-controller="Deposit" asp-action="Detail" asp-route-id="@item.Id" class="button small">Оформити</a>
 							</td>
 						</tr>
 					}

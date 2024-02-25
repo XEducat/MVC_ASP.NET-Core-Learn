@@ -5,19 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVC_ASP.NET_Core_Learn.Migrations
 {
-    public partial class IdentityActual : Migration
+    public partial class recreateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.AddColumn<string>(
-                name: "AppUserId",
-                table: "Deposits",
-                type: "nvarchar(450)",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
@@ -48,11 +39,28 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Deposits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Replenishment = table.Column<bool>(type: "bit", nullable: false),
+                    InterestPayment = table.Column<int>(type: "int", nullable: false),
+                    InterestRateNoEarlyClosure = table.Column<double>(type: "float", nullable: true),
+                    InterestRateEarlyClosure = table.Column<double>(type: "float", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deposits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Birdthday = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -100,6 +108,25 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DepositTerm",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NumberMonths = table.Column<int>(type: "int", nullable: false),
+                    DepositId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DepositTerm", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DepositTerm_Deposits_DepositId",
+                        column: x => x.DepositId,
+                        principalTable: "Deposits",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -187,10 +214,36 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Deposits_AppUserId",
-                table: "Deposits",
-                column: "AppUserId");
+            migrationBuilder.CreateTable(
+                name: "UserDeposits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DepositId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SelectedTerm = table.Column<int>(type: "int", nullable: true),
+                    InterestRate = table.Column<double>(type: "float", nullable: true),
+                    IsEarlyClosureAllowed = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDeposits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserDeposits_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserDeposits_Deposits_DepositId",
+                        column: x => x.DepositId,
+                        principalTable: "Deposits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -236,20 +289,24 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Deposits_AspNetUsers_AppUserId",
-                table: "Deposits",
-                column: "AppUserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+            migrationBuilder.CreateIndex(
+                name: "IX_DepositTerm_DepositId",
+                table: "DepositTerm",
+                column: "DepositId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDeposits_DepositId",
+                table: "UserDeposits",
+                column: "DepositId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDeposits_UserId",
+                table: "UserDeposits",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Deposits_AspNetUsers_AppUserId",
-                table: "Deposits");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -266,35 +323,22 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "DepositTerm");
+
+            migrationBuilder.DropTable(
+                name: "UserDeposits");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Deposits");
+
+            migrationBuilder.DropTable(
                 name: "Addresses");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Deposits_AppUserId",
-                table: "Deposits");
-
-            migrationBuilder.DropColumn(
-                name: "AppUserId",
-                table: "Deposits");
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Birdthday = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
         }
     }
 }

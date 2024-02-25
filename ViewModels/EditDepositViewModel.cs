@@ -17,15 +17,15 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
 		public bool Replenishment { get; set; }              
 
         [Display(Name = "Виплата процентів")]
-        public InterestRate InterestRate { get; set; }
+        public InterestPayment InterestRate { get; set; }
 
         [Display(Name = "Терміни депозиту")]
-        public IEnumerable<DepositTerm> Term { get; set; }   // Термін депозиту, [не доступний для зміни адміном наразі]
+        public List<DepositTerm> Term { get; set; }   // Термін депозиту, [не доступний для зміни адміном наразі]
 
-        [Display(Name = "Ставка без дострокового закриття(Вводити числа, виключно через символ '.')")]
+        [Display(Name = "Ставка без дострокового закриття(Вводити числа, через символ '.')")]
         public double? InterestRateNoEarlyClosure { get; set; }
 
-        [Display(Name = "Ставка з достроковим закриттям(Вводити числа, виключно через символ '.')")]
+        [Display(Name = "Ставка з достроковим закриттям(Вводити числа, через символ '.')")]
         public double? InterestRateEarlyClosure { get; set; }   
 	}
 }

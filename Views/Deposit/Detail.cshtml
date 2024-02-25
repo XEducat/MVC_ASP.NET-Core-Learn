@@ -1,97 +1,198 @@
-﻿@model Deposit
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using MVC_ASP.NET_Core_Learn.ViewModels
+@model UserDepositViewModel
 
-<div id="main" class="wrapper style1">
-	<div class="container">
-		<!-- Content -->
-		<section id="content">
-			<h2>Оформлення депозиту</h2>
-			<h4>Оберіть ставку та умови договору:</h4>
-			<section id="deposit-step1">
-				@* <div class="row gtr-uniform gtr-50"> *@
-				@if (Model.InterestRateNoEarlyClosure != null)
-				{
-					<div class="col-4 col-12-medium">
-						<input type="radio" id="priority-low" name="priority" checked="">
-						<label for="priority-low">
-							@Model.InterestRateNoEarlyClosure% річних<br />
-							для вкладу без дострокового розривання
-						</label>
-					</div>
-				}
 
-				@if (Model.InterestRateEarlyClosure != null)
-				{
-					<div class="col-4 col-12-medium">
-						<input type="radio" id="priority-normal" name="priority">
-						<label for="priority-normal">
-							@Model.InterestRateEarlyClosure% річних<br />
-							для вкладу з достроковим розриванняи
-						</label>
-					</div>
-				}
-				<a href="#" class="button primary" onclick="showNextStep()">Далі</a>
-				@* </div> *@
-			</section>
-			<section id="deposit-step2" style="display: none;">
-				<h4>Вибраний депозит:</h4>
-				<div style="display: flex;">
-					<div>Назва: </div>
-					<div style="padding-left: 10px;"> @Model.Title </div>
-				</div>
-				<div style="display: flex;">
-					<div>Ставка:</div>
-					<div style="padding-left: 10px;">
-						<div>
-							<div>3% річних </div>
-							<div>для вкладу без дострокового розривання</div>
-						</div>
-					</div>
-				</div>
-				<hr>
+<div id="main" class="wrapper style1" style="display: block; justify-content: center; align-items: center; flex-direction: column;">
+    <header class="major">
+        <h2>Оформлення депозиту</h2>
+    </header>
+    <div class="container" style="width: 25%">
+        <form asp-action="SubscribeUserToDeposit" method="post" onsubmit="updateTermsJson()">
+            <!-- Передеча необхідних данних для коректного відображення форми (прихована для користувача) -->
+            <div>
+                <input type="hidden" asp-for="DepositId" />
+                <input type="hidden" asp-for="Title" />
+                <input type="hidden" asp-for="InterestRateEarlyClosure" />
+                <input type="hidden" asp-for="InterestRateNoEarlyClosure" />
+                @for (int i = 0; i < Model.Terms.Count; i++)
+                {
+                    <input type="hidden" name="Terms[@i].Id" value="@(Model.Terms[i].Id)" />
+                    <input type="hidden" name="Terms[@i].NumberMonths" value="@(Model.Terms[i].NumberMonths)" />
+                }
+            </div>
 
-				<div>Виберіть строк</div>
-				<div style ="display: flex; margin-top: 10px">
-					<b>Строк(місяць):</b>
-					<div style="display: flex; margin-left: 20px">
-						@{
-							int index = 1;
-							foreach (var item in Model.Terms)
-							{
-								<div class="col-4 col-12-medium">
-									<input type="radio" id="term@(index)" name="priority">
-									<label for="term@(index)">
-										@item.NumberMonths
-									</label>
-								</div>
-								index++;
-							}
-						}
-					</div>
-				</div>
+            <!-- Перший етап -->
+            <section id="stage1" class="stage">
+                <h3>Крок 1: Основна інформація</h3>
 
-				<hr>
-				<h4>Дані для оформлення:</h4>
-				<h6>Введіть суму</h6>
-				<div style="display: flex; align-items: center;">
-					<div class="col-6 col-12-xsmall">
-						<input type="text" name="name" id="name" value="" placeholder="100.00">
-					</div>
-					<p style="margin: 0 0 0 10pt;">UAH</p>
-				</div>
-			</section>
-		</section>
-	</div>
+                <!-- Вибір ставки -->
+                <h4>Выберите ставку и условия договора:</h4>
+                <span asp-validation-for="InterestRate" class="text-danger"></span>
+                @if (Model.InterestRateNoEarlyClosure != null)
+                {
+                    <div>
+                        <input type="radio" id="depositNoEarlyClosure" name="SelectedInterestRate"
+                               value="@Model.InterestRateNoEarlyClosure" onchange="updateSelectedRate(this)" />
+                        <label for="depositNoEarlyClosure">@Model.InterestRateNoEarlyClosure% річних<br /> для вклада без досрочного розірвання</label>
+                    </div>
+                }
+                @if (Model.InterestRateEarlyClosure != null)
+                {
+                    <div>
+                        <input type="radio" id="depositEarlyClosure" name="SelectedInterestRate"
+                               value="@Model.InterestRateEarlyClosure" onchange="updateSelectedRate(this)" />
+                        <label for="depositEarlyClosure">@Model.InterestRateEarlyClosure% річних<br /> для вклада з досрочним розірванням</label>
+                    </div>
+                }
+
+                <!-- Данні сформовані на виборі ставки-->
+                <input type="hidden" asp-for="InterestRate"/>
+                <input type="hidden" asp-for="IsEarlyClosureAllowed"/>
+            </section>
+
+            <!-- Другий етап -->
+            <section id="stage2" class="stage" style="display: none">
+                <h3>Крок 2: Додаткова інформація</h3>
+
+                <!-- Поточний тариф та процентна ставка-->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <b>Назва:</b>
+                        </div>
+                        <div class="col">
+                            @Model.Title
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <b>Ставка:</b>
+                        </div>
+                        <div class="col">
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <!-- Вибір термінів депозиту -->
+                <div class="form-group">
+                    <h4>Виберіть строк: </h4>
+                    <span asp-validation-for="SelectedTerm" class="text-danger"></span>
+                    @foreach (var term in Model.Terms)
+                    {
+                        <div class="form-check form-check-inline d-inline">
+                            <input class="form-check-input" type="radio" name="selectedTerm" id="inlineRadio@(term.Id)" value="@term.NumberMonths">
+                            <label class="form-check-label" for="inlineRadio@(term.Id)">@term.NumberMonths</label>
+                        </div>
+                    }
+                </div>
+                <br />
+
+                <!-- Введення суми депозиту -->
+                <div style="margin: 0px 0px 20px 0;">
+                    <h4>
+                        <label asp-for="Amount"></label>
+                    </h4>
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-8">
+                            <input asp-for="Amount" />
+                        </div>
+                        <div class="col" style="display: flex; align-items: center; padding: 10px">
+                            <span>UAH</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Третій етап -->
+            <section id="stage3" class="stage" style="display: none">
+                <h3>Крок 3: Підтвердження</h3>
+                <section style="margin: 90px">
+                    <button class="button primary" type="submit" id="submitButton">Отправить</button>
+                </section>
+            </section>
+        </form>
+        <div>
+            <p class="button" onclick="prevStage()" style="margin-right: 10px;">Назад</p>
+            <p class="button" onclick="nextStage()">Далее</p>
+        </div>
+    </div>
 </div>
 
 <script>
-	function showNextStep() {
-		document.getElementById("deposit-step1").style.display = "none";
-		document.getElementById("deposit-step2").style.display = "block";
-		document.getElementById("term1").checked = true;
-	}
+    function prevStage() {
+        var stages = document.querySelectorAll('.stage'); // Находим все этапы
+        for (var i = 0; i < stages.length; i++) {
+            if (stages[i].style.display !== 'none') { // Находим текущий этап
+                if (i === 0) return; // Если текущий этап - первый, выходим из функции
+                stages[i].style.display = 'none'; // Скрываем текущий этап
+                stages[i - 1].style.display = 'block'; // Показываем предыдущий этап
+                break;
+            }
+        }
+    }
+
+    function nextStage() {
+        var stages = document.querySelectorAll('.stage'); // Находим все этапы
+        for (var i = 0; i < stages.length; i++) {
+            if (stages[i].style.display !== 'none') { // Находим текущий этап
+                if (i === stages.length - 1) return; // Если текущий этап - последний, выходим из функции
+                stages[i].style.display = 'none'; // Скрываем текущий этап
+                stages[i + 1].style.display = 'block'; // Показываем следующий этап
+                break;
+            }
+        }
+    }
+
+    function updateSelectedRate(radioButton) {
+        var selectedInterestRate = radioButton.value; // Отримати значення вибраної ставки
+        var isEarlyClosure = radioButton.id.includes("depositEarlyClosure"); // Перевірити, чи є опція з досрочним розірванням
+
+        // Встановити значення в моделі
+        document.getElementById("InterestRate").value = selectedInterestRate;
+        document.getElementById("IsEarlyClosureAllowed").value = isEarlyClosure;
+    }
 </script>
+
+
+@* 
+    <!-- Вибір терміну(RadioButton) -->
+    <div>
+    @foreach (var term in Model.Terms)
+    {
+    <input type="radio" id="term@(term.Id)" name="SelectedTerm" value="@term.Id" />
+    <label for="term@(term.Id)">@term.NumberMonths</label>
+    }
+    </div>
+
+
+    <!-- Выбор срока -->
+                     <div>
+    <label asp-for="SelectedTermId"></label>
+    <select asp-for="SelectedTermId" asp-items="@(new SelectList(Model.Terms, "Id", "NumberMonths"))">
+    <option value="">-- Select Term --</option>
+    </select>
+    </div> 
+
+
+    <!-- TODO: Переделать под нормальное отображение -->
+    <!-- Выбранная ставка -->
+    <div id="selectedRateContainer" ">
+    <h4>Выбранная ставка:</h4>
+    <p id="selectedRate"></p>
+    </div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Обработчик для выбора ставки
+        document.querySelectorAll('input[name="SelectedInterestRate"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                document.getElementById('selectedRate').textContent = this.value + '% річних'; // Отображаем выбранную ставку
+                document.getElementById('selectedRateContainer').style.display = 'block'; // Показываем контейнер с выбранной ставкой
+            });
+        });
+    });
+</script> *@

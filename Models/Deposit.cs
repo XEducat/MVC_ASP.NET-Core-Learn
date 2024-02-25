@@ -11,18 +11,18 @@ namespace MVC_ASP.NET_Core_Learn.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }                          // Айді
         public string Title { get; set; }                    // Назва депозиту
-        public string ShortDescription { get; set; }         // Короткий опис депозиту
+        public string ShortDescription { get; set; }         // Короткий опис депозиту--------------------------------------------------------------------
         public bool Replenishment { get; set; }              // Поповнення
-        public InterestRate InterestRate { get; set; }       // Виплата процентів
-        public IEnumerable<DepositTerm> Terms { get; set; }   // Термін депозиту
+        public InterestPayment InterestPayment { get; set; }       // Виплата процентів
+        public List<DepositTerm> Terms { get; set; }   // Термін депозиту
         public double? InterestRateNoEarlyClosure { get; set; } // Ставка без дострокового закриття
         public double? InterestRateEarlyClosure { get; set; }   // Ставка з достроковим закриттям
 
         public string GetInterestRateInString()
 		{
-			var field = InterestRate.GetType().GetField(InterestRate.ToString());
+			var field = InterestPayment.GetType().GetField(InterestPayment.ToString());
 			var descriptionAttribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
-			return descriptionAttribute?.Description ?? InterestRate.ToString();
+			return descriptionAttribute?.Description ?? InterestPayment.ToString();
 		}
 	}
 }

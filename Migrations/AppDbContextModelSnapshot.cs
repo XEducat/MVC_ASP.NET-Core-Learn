@@ -261,10 +261,7 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("InterestRate")
+                    b.Property<int>("InterestPayment")
                         .HasColumnType("int");
 
                     b.Property<double?>("InterestRateEarlyClosure")
@@ -285,8 +282,6 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Deposits");
                 });
@@ -309,7 +304,47 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
 
                     b.HasIndex("DepositId");
 
-                    b.ToTable("DepositTerm");
+                    b.ToTable("DepositTerms");
+                });
+
+            modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.UserDeposit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("DepositId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("InterestRate")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsEarlyClosureAllowed")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("SelectedTerm")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepositId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDeposits");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -374,18 +409,30 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.Deposit", b =>
-                {
-                    b.HasOne("MVC_ASP.NET_Core_Learn.Models.AppUser", null)
-                        .WithMany("Deposits")
-                        .HasForeignKey("AppUserId");
-                });
-
             modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.DepositTerm", b =>
                 {
                     b.HasOne("MVC_ASP.NET_Core_Learn.Models.Deposit", null)
-                        .WithMany("Term")
+                        .WithMany("Terms")
                         .HasForeignKey("DepositId");
+                });
+
+            modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.UserDeposit", b =>
+                {
+                    b.HasOne("MVC_ASP.NET_Core_Learn.Models.Deposit", "Deposit")
+                        .WithMany()
+                        .HasForeignKey("DepositId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MVC_ASP.NET_Core_Learn.Models.AppUser", "User")
+                        .WithMany("Deposits")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deposit");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.AppUser", b =>
@@ -395,7 +442,7 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
 
             modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.Deposit", b =>
                 {
-                    b.Navigation("Term");
+                    b.Navigation("Terms");
                 });
 #pragma warning restore 612, 618
         }

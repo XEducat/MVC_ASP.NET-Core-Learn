@@ -3,7 +3,7 @@
 
 namespace MVC_ASP.NET_Core_Learn.Data.Enums
 {
-    public enum InterestRate
+    public enum InterestPayment
     {
 		[Description("При поверненні")]
 		WhenReturning,

@@ -20,15 +20,15 @@ namespace MVC_ASP.NET_Core_Learn.Data
 					return;
 				}
 
-				// Начальные данные для депозитов
-				var seedDeposits = new List<Deposit>
+                // Начальные данные для депозитов
+                var seedDeposits = new List<Deposit>
 				{
 					new Deposit
 					{
 						Title = "Депозит 1",
 						ShortDescription = "Короткий опис депозиту 1",
 						Replenishment = true,
-						InterestRate = InterestRate.WhenReturning,
+						InterestPayment = InterestPayment.WhenReturning,
 						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 12 },
@@ -42,7 +42,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						Title = "Депозит 2",
 						ShortDescription = "Короткий опис депозиту 2",
 						Replenishment = false,
-						InterestRate = InterestRate.Monthly,
+						InterestPayment = InterestPayment.Monthly,
 						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 6 },
@@ -56,7 +56,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						Title = "Депозит 3",
 						ShortDescription = "Короткий опис депозиту 3",
 						Replenishment = true,
-						InterestRate = InterestRate.Monthly,
+						InterestPayment = InterestPayment.Monthly,
 						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 3 },
@@ -70,7 +70,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						Title = "Депозит 4",
 						ShortDescription = "Короткий опис депозиту 4",
 						Replenishment = false,
-						InterestRate = InterestRate.WhenReturning,
+						InterestPayment = InterestPayment.WhenReturning,
 						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 6 },
@@ -85,7 +85,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						Title = "Депозит 5",
 						ShortDescription = "Короткий опис депозиту 5",
 						Replenishment = true,
-						InterestRate = InterestRate.Monthly,
+						InterestPayment = InterestPayment.Monthly,
 						Terms = new List<DepositTerm>
 						{
 							new DepositTerm { NumberMonths = 6 },
