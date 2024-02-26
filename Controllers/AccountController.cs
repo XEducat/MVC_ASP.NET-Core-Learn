@@ -28,7 +28,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
 		{
 			if(!ModelState.IsValid) return View(loginViewModel);
 
@@ -63,6 +64,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if (!ModelState.IsValid) return View(registerViewModel);
@@ -100,7 +102,6 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             return RedirectToAction("Index", "Deposit");
         }
 
-		[HttpGet]
 		public async Task<IActionResult> LogOut()
 		{
             await _signInManager.SignOutAsync();

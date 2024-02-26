@@ -31,6 +31,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
         [HttpGet("Open/{id}")]
 		[Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Detail(int id)
         {
             var deposit = await _depositRepository.GetByIdAsync(id);
@@ -52,6 +53,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubscribeUserToDeposit(UserDepositViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -70,7 +73,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             {
                 User = currentUser,
                 UserId = currentUser.Id,
-                Amount = (decimal)viewModel.Amount,
+                Amount = viewModel.Amount,
                 InterestRate = viewModel.InterestRate,
                 IsEarlyClosureAllowed = viewModel.IsEarlyClosureAllowed,
                 SelectedTerm = viewModel.SelectedTerm,
@@ -109,7 +112,9 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Edit(int id, EditDepositViewModel depositVM)
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditDepositViewModel depositVM)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -155,7 +160,6 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 			if (userDeposit != null)
 			{
 				_depositRepository.Delete(userDeposit);
-				return RedirectToAction("Index");
 			}
 
 			return View("Index");
