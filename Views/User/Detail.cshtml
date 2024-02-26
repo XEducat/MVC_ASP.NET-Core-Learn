@@ -2,18 +2,46 @@
 @model UserDetailViewModel
 
 <div class="wrapper style1">
-    <div class="container" style="width:50%">
+    <div class="container">
         <header class="major">
             <h2> Профіль</h2>
         </header>
-        <p><b>Логін:</b> @Model.UserName</p>
-        <p><b>Пошта:</b> @Model.Email</p>
-        <div style="text-align: center;">
-            <a asp-controller="Account" asp-action="LogOut" class="button">Log Out</a>
 
-            <form asp-controller="Account" asp-action="LogOut" method="get">
-                <button type="submit" class="button" onclick="return confirm('Are you sure you want to delete?')">Delete Account</button>
-            </form>
+        <!-- Модальне підтвердження видалення -->
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body text-black mx-auto">
+                        Ви впевнені, що хочете видалити аккаунт?
+                    </div>
+                    <div class="modal-footer mx-auto">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                        <a class="btn btn-danger" id="confirmDelete" asp-controller="Account" asp-action="DeleteAccount">Видалити</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Данні про користувача -->
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <div>
+                    <p><b>Логін:</b> @Model.UserName</p>
+                    <p><b>Пошта:</b> @Model.Email</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки виходу/видалення для користувача -->
+        <div class="d-flex justify-content-center">
+            <div class="btn-group-vertical d-flex">
+                <a asp-controller="Account" asp-action="LogOut" class="btn btn-outline-primary mb-2 flex-fill">Log Out</a>
+
+                <!-- Кнопка-триггер модального підтвердження видалення -->
+                <a class="btn btn-outline-light mb-2 flex-fill" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
+                    Delete Account
+                </a>
+            </div>
         </div>
     </div>
 </div>
