@@ -2,63 +2,73 @@
 @using MVC_ASP.NET_Core_Learn.ViewModels
 @model EditDepositViewModel
 
-<div class="container">
+@{
+    var interestRateOptions = new List<SelectListItem>
+    {
+        new SelectListItem { Value = InterestPayment.WhenReturning.ToString(), Text = "При повернені" },
+        new SelectListItem { Value = InterestPayment.Monthly.ToString(), Text = "Щомісяця" },
+        new SelectListItem { Value = InterestPayment.Yearly.ToString(), Text = "Щороку" },
+        // Додайте інші варіанти, які вам потрібно відобразити
+    };
+}
 
-    <form method="post" asp-action="Edit" enctype="multipart/form-data">
-        @if (TempData["Error"] != null)
+<div id="main" class="wrapper style1">
+    <div class="container">
+        @using (Html.BeginForm("Edit", "Deposit", FormMethod.Post))
         {
-            <br />
-            <div class="col-md-12 alert alert-danger">
-                <span class="text-danger"><b>Sorry!</b> - @TempData["Error"] </span>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title)
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ShortDescription)
+                @Html.TextAreaFor(model => model.ShortDescription, new { @class = "form-control", rows = 4 })
+                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <div class="form-check">
+                    @Html.CheckBoxFor(model => model.Replenishment, new { @class = "form-check-input" })
+                    @Html.LabelFor(model => model.Replenishment, new { @class = "form-check-label" })
+                </div>
+                @Html.ValidationMessageFor(model => model.Replenishment, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InterestRate)
+                @Html.DropDownListFor(model => model.InterestRate, new SelectList(interestRateOptions, "Value", "Text"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.InterestRate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Term)
+                @for (int i = 0; i < Model.Term.Count; i++)
+                {
+                    <div>
+                        @Html.HiddenFor(model => model.Term[i].Id)
+                        @Html.TextBoxFor(model => model.Term[i].NumberMonths, new { @class = "form-control" })
+                    </div>
+                }
+                @Html.ValidationMessageFor(model => model.Term, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InterestRateNoEarlyClosure)
+                @Html.EditorFor(model => model.InterestRateNoEarlyClosure, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.InterestRateNoEarlyClosure, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InterestRateEarlyClosure)
+                @Html.EditorFor(model => model.InterestRateEarlyClosure, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.InterestRateEarlyClosure, "", new { @class = "text-danger" })
+            </div>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <button type="submit" class="button">Зберегти</button>
             </div>
         }
-        <input type="hidden" value="AddressId" id="AddressId" />
-        <div class="form-group">
-            <label asp-for="Title"></label>
-            <input asp-for="Title" class="form-control" placeholder="Title">
-            <span asp-validation-for="Title" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ShortDescription"></label>
-            <input asp-for="ShortDescription" class="form-control" placeholder="ShortDescription">
-            <span asp-validation-for="ShortDescription" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input asp-for="Replenishment" class="form-control">
-            <label asp-for="Replenishment"></label>
-            <span asp-validation-for="Replenishment" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="InterestRate"></label>
-            <select asp-for="InterestRate" asp-items="@Html.GetEnumSelectList<InterestPayment>()" class="form-control">
-                <option selected="selected" value="">--Select--</option>
-            </select>
-            <span asp-validation-for="InterestRate" class="text-danger"></span>
-        </div>
-
-      @*TODO: Покращити зміну DepositTerm додавши йому окремий View можливо, та хоча б ViewModel *@
-        <div class="form-group">
-            <label asp-for="Term"></label>
-            @for (var i = 0; i < Model.Term.Count(); i++)
-            {
-                <input type="hidden" name="Term[@i].Id" value="@Model.Term[i].Id" />
-                <input asp-for="Term[@i].NumberMonths" name="Term[@i].NumberMonths" value="@Model.Term[i].NumberMonths" />
-            }
-            <span asp-validation-for="Term" class="text-danger"></span>
-        </div>
-
-
-        <div class="form-group">
-            <label asp-for="InterestRateNoEarlyClosure"></label>
-            <input asp-for="InterestRateNoEarlyClosure" class="form-control">
-            <span asp-validation-for="InterestRateNoEarlyClosure" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="InterestRateEarlyClosure"></label>
-            <input asp-for="InterestRateEarlyClosure" class="form-control">
-            <span asp-validation-for="InterestRateEarlyClosure" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="button primary">Submit</button>
-    </form>
+    </div>
 </div>
