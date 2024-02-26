@@ -12,7 +12,7 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
         [Display(Name = "Сума депозиту")]
 
         [DataType(DataType.Currency)]
-        [Range(2, 500000, ErrorMessage = "Сума має бути від 2 до 500000")]
+        [Range(2, 200000, ErrorMessage = "Сума має бути від 2 до 200000")]
         public decimal Amount { get; set; } 
 
         [Display(Name = "Обраний термін")]
