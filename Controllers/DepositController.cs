@@ -29,67 +29,39 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 			return View(deposits);
 		}
 
-        [HttpGet("Open/{id}")]
-		[Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Detail(int id)
-        {
-            var deposit = await _depositRepository.GetByIdAsync(id);
-            if (deposit == null)
-            {
-                return View("Error");
-            }
-
-            UserDepositViewModel viewModel = new UserDepositViewModel
-            {
-                DepositId = deposit.Id,
-                Title = deposit.Title,
-                Terms = deposit.Terms,
-                InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
-                InterestRateNoEarlyClosure = deposit.InterestRateNoEarlyClosure,
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubscribeUserToDeposit(UserDepositViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-                return View("Detail", viewModel);
-
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null)
-                return RedirectToAction("Error", "Home"); // Якщо користувача не знайдено
-
-            var deposit = await _depositRepository.GetByIdAsync(viewModel.DepositId);
-            if (deposit == null)
-                return RedirectToAction("Error", "Home"); // Якщо депозита не знайдено
-
-            // Створюємо новий об'єкт UserDeposit з даними з viewModel
-            var userDeposit = new UserDeposit(deposit)
-            {
-                User = currentUser,
-                UserId = currentUser.Id,
-                Amount = viewModel.Amount,
-                InterestRate = viewModel.InterestRate,
-                IsEarlyClosureAllowed = viewModel.IsEarlyClosureAllowed,
-                SelectedTerm = viewModel.SelectedTerm,
-            };
-
-            // Додаємо userDeposit до контексту даних і зберігаємо зміни
-            _context.UserDeposits.Add(userDeposit);
-            await _context.SaveChangesAsync();
-
-            // Перенаправляємо користувача на головну
-            return RedirectToAction("Index", "Home");
-        }
-
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(EditDepositViewModel depositVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit deposit");
+                return View("Create", depositVM);
+            }
+
+            if (depositVM.Term.Any(t => t.NumberMonths < 1))
+            {
+                TempData["Error"] = "Failed to add. Terms must be greatest than 0";
+                return View("Create", depositVM);
+            }
+
+            var deposit = new Deposit()
+            {
+                Title = depositVM.Title,
+                ShortDescription = depositVM.ShortDescription,
+                Replenishment = depositVM.Replenishment,
+                InterestPayment = depositVM.InterestRate,
+                Terms = depositVM.Term,
+                InterestRateEarlyClosure = depositVM.InterestRateEarlyClosure,
+                InterestRateNoEarlyClosure = depositVM.InterestRateNoEarlyClosure,
+            };
+
+            _depositRepository.Add(deposit);
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -164,5 +136,63 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
 			return View("Index");
 		}
-	}
+
+        [HttpGet("Open/{id}")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Detail(int id)
+        {
+            var deposit = await _depositRepository.GetByIdAsync(id);
+            if (deposit == null)
+            {
+                return View("Error");
+            }
+
+            UserDepositViewModel viewModel = new UserDepositViewModel
+            {
+                DepositId = deposit.Id,
+                Title = deposit.Title,
+                Terms = deposit.Terms,
+                InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
+                InterestRateNoEarlyClosure = deposit.InterestRateNoEarlyClosure,
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubscribeUserToDeposit(UserDepositViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return View("Detail", viewModel);
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+                return RedirectToAction("Error", "Home"); // Якщо користувача не знайдено
+
+            var deposit = await _depositRepository.GetByIdAsync(viewModel.DepositId);
+            if (deposit == null)
+                return RedirectToAction("Error", "Home"); // Якщо депозита не знайдено
+
+            // Створюємо новий об'єкт UserDeposit з даними з viewModel
+            var userDeposit = new UserDeposit(deposit)
+            {
+                User = currentUser,
+                UserId = currentUser.Id,
+                Amount = viewModel.Amount,
+                InterestRate = viewModel.InterestRate,
+                IsEarlyClosureAllowed = viewModel.IsEarlyClosureAllowed,
+                SelectedTerm = viewModel.SelectedTerm,
+            };
+
+            // Додаємо userDeposit до контексту даних і зберігаємо зміни
+            _context.UserDeposits.Add(userDeposit);
+            await _context.SaveChangesAsync();
+
+            // Перенаправляємо користувача на головну
+            return RedirectToAction("Index", "Home");
+        }
+    }
 }

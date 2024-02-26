@@ -1,6 +1,182 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using MVC_ASP.NET_Core_Learn.Data.Enums
+@using MVC_ASP.NET_Core_Learn.ViewModels
+@model EditDepositViewModel
+
+<div class="container">
+
+    <form method="post" asp-action="Create" enctype="multipart/form-data">
+        @if (TempData["Error"] != null)
+        {
+            <br />
+            <div class="col-md-12 alert alert-danger">
+                <span class="text-danger fw-bold">@TempData["Error"] </span>
+            </div>
+        }
+        <input type="hidden" value="AddressId" id="AddressId" />
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" placeholder="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ShortDescription"></label>
+            <input asp-for="ShortDescription" class="form-control" placeholder="ShortDescription">
+            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Replenishment" class="form-control">
+            <label asp-for="Replenishment"></label>
+            <span asp-validation-for="Replenishment" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="InterestRate"></label>
+            <select asp-for="InterestRate" asp-items="@Html.GetEnumSelectList<InterestPayment>()" class="form-control">
+                <option selected="selected" value="">--Select--</option>
+            </select>
+            <span asp-validation-for="InterestRate" class="text-danger"></span>
+        </div>
+
+        <div class="form-row align-items-center">
+            <div id="term-container" class="col-auto">
+            </div>
+        </div>
+
+        <button id="add-button" type="button" class="btn btn-success">+</button>
+        <button id="remove-button" type="button" class="btn btn-danger">-</button>
+
+
+
+        <div class="form-group">
+            <label asp-for="InterestRateNoEarlyClosure"></label>
+            <input asp-for="InterestRateNoEarlyClosure" class="form-control">
+            <span asp-validation-for="InterestRateNoEarlyClosure" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="InterestRateEarlyClosure"></label>
+            <input asp-for="InterestRateEarlyClosure" class="form-control">
+            <span asp-validation-for="InterestRateEarlyClosure" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="button primary">Submit</button>
+    </form>
+</div>
+
+
+<!-- Шаблон текстового поля -->
+<template id="input-template">
+    <div class="form-group" style="width:150px">
+        <label class="sr-only" for="inlineFormInput">Name</label>
+        <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Введіть термін">
+    </div>
+</template>
+
+<script>
+    var termContainer = document.getElementById("term-container");
+    var addButton = document.getElementById("add-button");
+    var removeButton = document.getElementById("remove-button");
+    var submitButton = document.getElementById("submit-button");
+    var inputTemplate = document.getElementById("input-template");
+
+    addButton.addEventListener("click", addInput);
+    submitButton.addEventListener("click", submitForm);
+
+    removeButton.addEventListener("click", function () {
+        var children = termContainer.children;
+        if (children.length > 0) {
+            termContainer.removeChild(children[children.length - 1]);
+        }
+    });
+
+    function addInput() {
+        var inputClone = inputTemplate.content.cloneNode(true);
+        termContainer.insertBefore(inputClone, termContainer.firstChild);
+    }
+
+    document.getElementById("submit-button").addEventListener("click", function () {
+        var termInputs = document.getElementsByClassName("term-input");
+        var terms = [];
+
+        for (var i = 0; i < termInputs.length; i++) {
+            var term = termInputs[i].value.trim();
+            if (term !== "") {
+                terms.push(term);
+            }
+        }
+
+
+        if (terms.length > 0) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Depost/AddTerms", true);         // TODO: Переробити під другий контроллер
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Терміни успішно додано");
+                    // Виконати додаткові дії, якщо потрібно
+                }
+            };
+            xhr.send(JSON.stringify({ terms: terms }));
+        } else {
+            console.log("Немає термінів для додавання");
+        }
+    });
+</script>
+@* 
+@using MVC_ASP.NET_Core_Learn.Data.Enums
+@using MVC_ASP.NET_Core_Learn.ViewModels
+@model EditDepositViewModel
+
 @{
+    var interestRateOptions = new List<SelectListItem>
+    {
+        new SelectListItem { Value = InterestPayment.WhenReturning.ToString(), Text = "WhenReturning" },
+        new SelectListItem { Value = InterestPayment.Monthly.ToString(), Text = "Monthly" },
+        new SelectListItem { Value = InterestPayment.Yearly.ToString(), Text = "Yearly" },
+        // Додайте інші варіанти, які вам потрібно відобразити
+    };
 }
 
+@using (Html.BeginForm("ActionName", "ControllerName", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title)
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+
+    <!-- Додайте інші поля моделі тут -->
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.InterestRate)
+        @Html.DropDownListFor(model => model.InterestRate, new SelectList(interestRateOptions, "Value", "Text"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.InterestRate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Term)
+        @foreach (var term in Model.Term)
+        {
+            <div>
+                @Html.HiddenFor(model => term.Id)
+                @Html.CheckBoxFor(model => term.Sel)
+                @Html.LabelFor(model => term.NumberMonths, "Термін")
+            </div>
+        }
+        @Html.ValidationMessageFor(model => model.Term, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.InterestRateNoEarlyClosure)
+        @Html.EditorFor(model => model.InterestRateNoEarlyClosure, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.InterestRateNoEarlyClosure, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.InterestRateEarlyClosure)
+        @Html.EditorFor(model => model.InterestRateEarlyClosure, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.InterestRateEarlyClosure, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+} *@
