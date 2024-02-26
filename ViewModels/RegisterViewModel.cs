@@ -10,6 +10,7 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
 
         [Display(Name = "Email addres")]
         [Required(ErrorMessage = "Email addres is required")]
+        [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 
         [Required]
