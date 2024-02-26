@@ -17,7 +17,6 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
         [HttpGet("profile")]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Detail()
         {
             var user = await _userManager.GetUserAsync(User);
