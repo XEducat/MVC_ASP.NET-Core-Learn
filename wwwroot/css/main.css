@@ -9,6 +9,11 @@
 */
 
 
+/* ƒл€ вс≥х скролльних елемент≥в */
+::-webkit-scrollbar {
+	width: 0; /* «м≥нюЇмо ширину скроллбара на 0 */
+}
+
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 pre, a, abbr, acronym, address, big, cite,
@@ -2989,7 +2994,7 @@ input[type="button"],
 	}
 
 		.goto-next:before {
-			background-image: url("/images/a");
+			background-image: url("/images/arrow.svg");
 			background-position: center center;
 			background-repeat: no-repeat;
 			background-size: contain;
