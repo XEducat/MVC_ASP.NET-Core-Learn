@@ -56,12 +56,16 @@
                 <h3>Крок 2: Додаткова інформація</h3>
 
                 <!-- Поточний тариф та процентна ставка-->
-                <div>
-                    <b>Назва:</b> @Model.Title
+                <div class="d-flex">
+                    <label for="interestRateValue"><b>Назва:</b></label>
+                    <span class="mx-2">@Model.Title</span>
+                     
                 </div>
-                @* <div>
-                <b>Ставка:</b> @Model.InterestRate
-                </div> *@
+                <div class="d-flex">
+                    <label for="interestRateValue"><b>Ставка: </b></label>
+                    <span id="interestRateValue" class="mx-2"></span>
+                    @* <div id="interestRateValue" class="mx-2"></div> *@
+                </div>
                 <br />
 
                 <!-- Вибір термінів депозиту -->
@@ -86,13 +90,9 @@
                         <label asp-for="Amount"></label>
                     </h4>
                     <span asp-validation-for="Amount" class="text-danger"></span>
-                    <div class="row">
-                        <div class="col-8">
-                            <input asp-for="Amount" />
-                        </div>
-                        <div class="col" style="display: flex; align-items: center; padding: 10px">
-                            <span>UAH</span>
-                        </div>
+                    <div class="d-flex align-items-center">
+                        <input asp-for="Amount" />
+                        <span class="mx-2">UAH</span>
                     </div>
                 </div>
             </section>
@@ -106,7 +106,7 @@
         </form>
     </div>
     <!-- Навігаційні кнопки -->
-    <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center">
         <p class="button" onclick="prevStage()" style="margin-right: 10px;">Назад</p>
         <p class="button" onclick="nextStage()">Далее</p>
     </div>
@@ -144,46 +144,13 @@
         // Встановити значення в моделі
         document.getElementById("InterestRate").value = selectedInterestRate;
         document.getElementById("IsEarlyClosureAllowed").value = isEarlyClosure;
+
+        // Оновити значення ставки на сторінці
+        if (isEarlyClosure) {
+            document.getElementById("interestRateValue").innerText = selectedInterestRate + "% річних\n для вклада з досрочним розірванням";
+        }
+        else {
+            document.getElementById("interestRateValue").innerText = selectedInterestRate + "% річних\n для вклада без досрочного розірвання";
+        }
     }
 </script>
-
-
-@*
-    <!-- Вибір терміну(RadioButton) -->
-    <div>
-    @foreach (var term in Model.Terms)
-    {
-    <input type="radio" id="term@(term.Id)" name="SelectedTerm" value="@term.Id" />
-    <label for="term@(term.Id)">@term.NumberMonths</label>
-    }
-    </div>
-
-
-    <!-- Выбор срока -->
-                     <div>
-    <label asp-for="SelectedTermId"></label>
-    <select asp-for="SelectedTermId" asp-items="@(new SelectList(Model.Terms, "Id", "NumberMonths"))">
-    <option value="">-- Select Term --</option>
-    </select>
-    </div>
-
-
-    <!-- TODO: Переделать под нормальное отображение -->
-    <!-- Выбранная ставка -->
-    <div id="selectedRateContainer" ">
-    <h4>Выбранная ставка:</h4>
-    <p id="selectedRate"></p>
-    </div>
-
-<script>
-
-    document.addEventListener('DOMContentLoaded', function () {
-        // Обработчик для выбора ставки
-        document.querySelectorAll('input[name="SelectedInterestRate"]').forEach(radio => {
-            radio.addEventListener('change', function () {
-                document.getElementById('selectedRate').textContent = this.value + '% річних'; // Отображаем выбранную ставку
-                document.getElementById('selectedRateContainer').style.display = 'block'; // Показываем контейнер с выбранной ставкой
-            });
-        });
-    });
-</script> *@
