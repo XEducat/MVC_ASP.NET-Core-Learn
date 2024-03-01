@@ -17,7 +17,7 @@
                         @if (TempData["Error"] != null)
                         {
                             <div class="col-md-12 alert alert-danger">
-                                <span class="text-danger"><b>Sorry!</b> - @TempData["Error"]</span>
+                                <span class="text-danger fw-bold">@TempData["Error"]</span>
                             </div>
                         }
                         <form asp-action="Login">
