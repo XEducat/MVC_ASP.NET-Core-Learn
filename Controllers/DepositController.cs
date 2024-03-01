@@ -1,24 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MVC_ASP.NET_Core_Learn.Data;
 using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
 using MVC_ASP.NET_Core_Learn.Models;
 using MVC_ASP.NET_Core_Learn.ViewModels;
 
 namespace MVC_ASP.NET_Core_Learn.Controllers
 {
-	public class DepositController : Controller
+    /// <summary>
+    /// Контролер для управління шаблонами депозитів.
+    /// </summary>
+    public class DepositController : Controller
 	{
 		private readonly IDepositRepository _depositRepository;
-        private readonly AppDbContext _context; // TODO: Додати IUserDepositRepository
-        private readonly UserManager<AppUser> _userManager;
 
-        public DepositController(IDepositRepository depositRepository, UserManager<AppUser> userManager, AppDbContext context)
+        public DepositController(IDepositRepository depositRepository, UserManager<AppUser> userManager)
 		{
 			_depositRepository = depositRepository;
-            _userManager = userManager;
-            _context = context;
         }
 
         [HttpGet("Open")]
@@ -136,66 +134,5 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
 			return View("Index");
 		}
-
-        [HttpGet("Open/{id}")]
-        [Authorize]
-        public async Task<IActionResult> Detail(int id)
-        {
-            var deposit = await _depositRepository.GetByIdAsync(id);
-            if (deposit == null)
-            {
-                var errorViewModel = new ErrorViewModel
-                {
-                    Errors = new List<string> { "Депозит не найден" }
-                };
-                return View("Error", errorViewModel);
-            }
-
-            UserDepositViewModel viewModel = new UserDepositViewModel
-            {
-                DepositId = deposit.Id,
-                Title = deposit.Title,
-                Terms = deposit.Terms,
-                InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
-                InterestRateNoEarlyClosure = deposit.InterestRateNoEarlyClosure,
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubscribeUserToDeposit(UserDepositViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-                return View("Detail", viewModel);
-
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null)
-                return RedirectToAction("Error", "Home"); // Якщо користувача не знайдено
-
-            var deposit = await _depositRepository.GetByIdAsync(viewModel.DepositId);
-            if (deposit == null)
-                return RedirectToAction("Error", "Home"); // Якщо депозита не знайдено
-
-            // Створюємо новий об'єкт UserDeposit з даними з viewModel
-            var userDeposit = new UserDeposit(deposit)
-            {
-                User = currentUser,
-                UserId = currentUser.Id,
-                Amount = viewModel.Amount,
-                InterestRate = viewModel.InterestRate,
-                IsEarlyClosureAllowed = viewModel.IsEarlyClosureAllowed,
-                SelectedTerm = viewModel.SelectedTerm,
-            };
-
-            // Додаємо userDeposit до контексту даних і зберігаємо зміни
-            _context.UserDeposits.Add(userDeposit);
-            await _context.SaveChangesAsync();
-
-            // Перенаправляємо користувача на головну
-            return RedirectToAction("Index", "Home");
-        }
     }
 }

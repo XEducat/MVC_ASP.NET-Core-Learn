@@ -7,7 +7,7 @@
         <h2>Оформлення депозиту</h2>
     </header>
     <div class="container d-flex justify-content-center" style="width:50%">
-        <form asp-action="SubscribeUserToDeposit" method="post" onsubmit="updateTermsJson()">
+        <form asp-controller="UserDeposit" asp-action="SubscribeUserToDeposit" onsubmit="updateTermsJson()">
             <!-- Передеча необхідних данних для коректного відображення форми (прихована для користувача) -->
             <div>
                 <input type="hidden" asp-for="DepositId" />
@@ -32,7 +32,7 @@
                 {
                     <div>
                         <input type="radio" id="depositNoEarlyClosure" name="SelectedInterestRate"
-                                value="@Model.InterestRateNoEarlyClosure" onchange="updateSelectedRate(this)" />
+                               value="@Model.InterestRateNoEarlyClosure" onchange="updateSelectedRate(this)" />
                         <label for="depositNoEarlyClosure">@Model.InterestRateNoEarlyClosure% річних<br /> для вклада без досрочного розірвання</label>
                     </div>
                 }
@@ -40,14 +40,14 @@
                 {
                     <div>
                         <input type="radio" id="depositEarlyClosure" name="SelectedInterestRate"
-                                value="@Model.InterestRateEarlyClosure" onchange="updateSelectedRate(this)" />
+                               value="@Model.InterestRateEarlyClosure" onchange="updateSelectedRate(this)" />
                         <label for="depositEarlyClosure">@Model.InterestRateEarlyClosure% річних<br /> для вклада з досрочним розірванням</label>
                     </div>
                 }
 
                 <!-- Данні сформовані на виборі ставки-->
-                <input type="hidden" asp-for="InterestRate"/>
-                <input type="hidden" asp-for="IsEarlyClosureAllowed"/>
+                <input type="hidden" asp-for="InterestRate" />
+                <input type="hidden" asp-for="IsEarlyClosureAllowed" />
             </section>
 
 
@@ -60,7 +60,7 @@
                     <b>Назва:</b> @Model.Title
                 </div>
                 @* <div>
-                    <b>Ставка:</b> @Model.InterestRate
+                <b>Ставка:</b> @Model.InterestRate
                 </div> *@
                 <br />
 
@@ -148,7 +148,7 @@
 </script>
 
 
-@* 
+@*
     <!-- Вибір терміну(RadioButton) -->
     <div>
     @foreach (var term in Model.Terms)
@@ -165,7 +165,7 @@
     <select asp-for="SelectedTermId" asp-items="@(new SelectList(Model.Terms, "Id", "NumberMonths"))">
     <option value="">-- Select Term --</option>
     </select>
-    </div> 
+    </div>
 
 
     <!-- TODO: Переделать под нормальное отображение -->
