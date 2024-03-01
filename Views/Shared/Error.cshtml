@@ -3,14 +3,26 @@
     ViewData["Title"] = "Error";
 }
 
+<!DOCTYPE html>
+
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model.ShowRequestId)
+@if (Model != null && Model.ShowRequestId)
 {
     <p>
         <strong>Request ID:</strong> <code>@Model.RequestId</code>
     </p>
+}
+
+<h1>Errors: </h1>
+@if (Model.Errors != null && Model.Errors.Any())
+{
+    <ul>
+        @foreach (var error in Model.Errors)
+        {
+            <li>@error</li>
+        }
+    </ul>
 }
 
 <h3>Development Mode</h3>
@@ -23,13 +35,3 @@
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
 </p>
-
-<h2>Errors:</h2>
-@if (Model.Errors.Count != 0)
-{
-    foreach (var error in Model.Errors)
-    {
-        <p>@error</p>
-        <br />
-    }
-}

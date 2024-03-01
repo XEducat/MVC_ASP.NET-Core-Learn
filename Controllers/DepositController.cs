@@ -139,13 +139,16 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
         [HttpGet("Open/{id}")]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Detail(int id)
         {
             var deposit = await _depositRepository.GetByIdAsync(id);
             if (deposit == null)
             {
-                return View("Error");
+                var errorViewModel = new ErrorViewModel
+                {
+                    Errors = new List<string> { "Депозит не найден" }
+                };
+                return View("Error", errorViewModel);
             }
 
             UserDepositViewModel viewModel = new UserDepositViewModel
