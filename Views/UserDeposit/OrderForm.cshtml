@@ -7,7 +7,7 @@
         <h2>Оформлення депозиту</h2>
     </header>
     <div class="container d-flex justify-content-center" style="width:50%">
-        <form asp-controller="UserDeposit" asp-action="SubscribeUserToDeposit" onsubmit="updateTermsJson()">
+        <form method="post" onsubmit="updateTermsJson()">
             <!-- Передеча необхідних данних для коректного відображення форми (прихована для користувача) -->
             <div>
                 <input type="hidden" asp-for="DepositId" />

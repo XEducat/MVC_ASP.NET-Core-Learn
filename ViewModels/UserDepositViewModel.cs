@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using MVC_ASP.NET_Core_Learn.Models;
+﻿using MVC_ASP.NET_Core_Learn.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MVC_ASP.NET_Core_Learn.ViewModels
@@ -33,5 +32,4 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
         public double? InterestRateEarlyClosure { get; set; }
         public double? InterestRateNoEarlyClosure { get; set; }
     }
-
 }

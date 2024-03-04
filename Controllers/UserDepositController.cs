@@ -50,9 +50,9 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
+        [HttpPost("Open/{depositId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubscribeUserToDeposit(UserDepositViewModel viewModel)
+		public async Task<IActionResult> OrderForm(UserDepositViewModel viewModel)
         {
             if (!ModelState.IsValid)
                 return View(nameof(OrderForm), viewModel);
