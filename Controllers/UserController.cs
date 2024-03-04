@@ -17,7 +17,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
         [HttpGet("profile")]
         [Authorize]
-        public async Task<IActionResult> Detail()
+        public async Task<IActionResult> About()
         {
             var user = await _userManager.GetUserAsync(User);
 
