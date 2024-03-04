@@ -33,18 +33,16 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             {
                 var errorViewModel = new ErrorViewModel
                 {
-                    Errors = new List<string> { "Депозит не найден" }
+                    Errors = new List<string> { "Депозит не знайдено" }
                 };
                 return View("Error", errorViewModel);
             }
 
             UserDepositViewModel viewModel = new UserDepositViewModel
             {
+                Deposit = deposit,
                 DepositId = deposit.Id,
                 Title = deposit.Title,
-                Terms = deposit.Terms,
-                InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
-                InterestRateNoEarlyClosure = deposit.InterestRateNoEarlyClosure,
             };
 
             return View(viewModel);

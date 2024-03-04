@@ -8,16 +8,19 @@
     </header>
     <div class="container d-flex justify-content-center" style="width:50%">
         <form method="post" onsubmit="updateTermsJson()">
-            <!-- Передеча необхідних данних для коректного відображення форми (прихована для користувача) -->
+            <!-- Передача данних депозиту (прихована для користувача) -->
             <div>
                 <input type="hidden" asp-for="DepositId" />
                 <input type="hidden" asp-for="Title" />
-                <input type="hidden" asp-for="InterestRateEarlyClosure" />
-                <input type="hidden" asp-for="InterestRateNoEarlyClosure" />
-                @for (int i = 0; i < Model.Terms.Count; i++)
+                <input type="hidden" asp-for="Deposit.InterestRateEarlyClosure" />
+                <input type="hidden" asp-for="Deposit.InterestRateNoEarlyClosure" />
+                <input type="hidden" asp-for="Deposit.ShortDescription" />
+                <input type="hidden" asp-for="Deposit.Title" />
+                <!-- Передача термінів депозиту -->
+                @for (int i = 0; i < Model.Deposit.Terms.Count; i++)
                 {
-                    <input type="hidden" name="Terms[@i].Id" value="@(Model.Terms[i].Id)" />
-                    <input type="hidden" name="Terms[@i].NumberMonths" value="@(Model.Terms[i].NumberMonths)" />
+                    <input type="hidden" name="Deposit.Terms[@i].Id" value="@Model.Deposit.Terms[i].Id" />
+                    <input type="hidden" name="Deposit.Terms[@i].NumberMonths" value="@Model.Deposit.Terms[i].NumberMonths" />
                 }
             </div>
 
@@ -28,20 +31,20 @@
                 <!-- Вибір ставки -->
                 <h4>Выберите ставку и условия договора:</h4>
                 <span asp-validation-for="InterestRate" class="text-danger"></span>
-                @if (Model.InterestRateNoEarlyClosure != null)
+                @if (Model.Deposit.InterestRateNoEarlyClosure != null)
                 {
                     <div>
                         <input type="radio" id="depositNoEarlyClosure" name="SelectedInterestRate"
-                               value="@Model.InterestRateNoEarlyClosure" onchange="updateSelectedRate(this)" />
-                        <label for="depositNoEarlyClosure">@Model.InterestRateNoEarlyClosure% річних<br /> для вклада без досрочного розірвання</label>
+                               value="@Model.Deposit.InterestRateNoEarlyClosure" onchange="updateSelectedRate(this)" />
+                        <label for="depositNoEarlyClosure">@Model.Deposit.InterestRateNoEarlyClosure% річних<br /> для вклада без досрочного розірвання</label>
                     </div>
                 }
-                @if (Model.InterestRateEarlyClosure != null)
+                @if (Model.Deposit.InterestRateEarlyClosure != null)
                 {
                     <div>
                         <input type="radio" id="depositEarlyClosure" name="SelectedInterestRate"
-                               value="@Model.InterestRateEarlyClosure" onchange="updateSelectedRate(this)" />
-                        <label for="depositEarlyClosure">@Model.InterestRateEarlyClosure% річних<br /> для вклада з досрочним розірванням</label>
+                               value="@Model.Deposit.InterestRateEarlyClosure" onchange="updateSelectedRate(this)" />
+                        <label for="depositEarlyClosure">@Model.Deposit.InterestRateEarlyClosure% річних<br /> для вклада з досрочним розірванням</label>
                     </div>
                 }
 
@@ -73,7 +76,7 @@
                     <h4>Виберіть строк: </h4>
                     <span asp-validation-for="SelectedTerm" class="text-danger"></span>
                     <div>
-                        @foreach (var term in Model.Terms)
+                        @foreach (var term in Model.Deposit.Terms)
                         {
                             <div class="form-check-inline">
                                 <input class="form-check-input" type="radio" name="selectedTerm" id="inlineRadio@(term.Id)" value="@term.NumberMonths">
