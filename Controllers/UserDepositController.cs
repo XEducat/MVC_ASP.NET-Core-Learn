@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC_ASP.NET_Core_Learn.Data;
 using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
 using MVC_ASP.NET_Core_Learn.Models;
@@ -80,6 +81,18 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
             // Перенаправляємо користувача на головну
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> All()
+		{
+            // Беремо поточного юзера
+			var currentUser = await _userManager.GetUserAsync(User);
+
+            // Дістаємо його депозити
+			IEnumerable<UserDeposit> userDeposits = await _context.UserDeposits.Where(ud => ud.UserId == currentUser.Id) .ToListAsync();
+
+			return View(userDeposits);
         }
     }
 }

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<UserDeposit>
+
+<div id="main" class="wrapper style1">
+    <div class="container-fluid">
+        <header class="major">
+            <h2>Ваші депозити</h2>
+        </header>
+		<div class="d-flex flex-wrap justify-content-center">
+			@foreach (var deposit in Model)
+			{
+				<div>
+					<div class="card text-center text-white bg-dark" style="max-width: 24rem; margin: 30px;">
+						@* <div class="card-header">Header</div> *@
+						<div class="card-body">
+							<h4 class="card-title">@deposit.Title</h4>
+							@* <p class="card-text">Текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст </p> *@
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item bg-dark text-white">@deposit.Amount грн</li>
+							<li class="list-group-item bg-dark text-white">@deposit.SelectedTerm міс.</li>
+							<li class="list-group-item bg-dark text-white">Кожного місяця </li>
+							<li class="list-group-item bg-dark text-white">@deposit.InterestRate%</li>
+						</ul>
+						<div class="card-body text-center">
+							<a href="#" class="button small">Поповнити</a>
+							<a href="#" class="button small">Статистика</a>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+
+@*		Styles for cards
+		<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+			<div class="card-header">Header</div>
+			<div class="card-body">
+				<h5 class="card-title">Secondary card title</h5>
+				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			</div>
+		</div>
+
+		<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+			<div class="card-header">Header</div>
+			<div class="card-body">
+				<h5 class="card-title">Danger card title</h5>
+				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			</div>
+		</div>
+
+		<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+			<div class="card-header">Header</div>
+			<div class="card-body">
+				<h5 class="card-title">Dark card title</h5>
+				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			</div>
+		</div> *@
+    </div>
+</div>
+
