@@ -15,7 +15,7 @@
 }
 
 <h1>Errors: </h1>
-@if (Model.Errors != null && Model.Errors.Any())
+@if (Model != null && Model.Errors != null && Model.Errors.Any())
 {
     <ul>
         @foreach (var error in Model.Errors)
