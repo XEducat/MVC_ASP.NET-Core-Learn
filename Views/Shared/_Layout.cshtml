@@ -7,13 +7,12 @@
         @Html.AntiForgeryToken()
     </head>
     <body class="is-preload">
-        <div id="page-wrapper">
-            @await Html.PartialAsync("HeaderPartial")
-
+        @await Html.PartialAsync("HeaderPartial")
+        @* <div id="page-wrapper"> *@
             @RenderBody()
 
             @await Html.PartialAsync("FooterPartial")
-        </div>
+        @* </div> *@
 
         @await Html.PartialAsync("ScriptsPartial")
     </body>

@@ -23,7 +23,7 @@
             <li><a asp-controller="Deposit" asp-action="Index">Deposits</a></li>
             @if (User.Identity.IsAuthenticated)
             {
-                <li><a asp-controller="User" asp-action="Deposits">My deposits</a></li>
+                <li><a asp-controller="User" asp-action="Deposits">Wallet</a></li>
                 <li><a asp-controller="User" asp-action="About" class="button">Profile</a></li>
             }
             else
