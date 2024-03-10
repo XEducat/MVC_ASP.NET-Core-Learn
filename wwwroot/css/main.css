@@ -4161,11 +4161,6 @@ input[type="button"],
 	padding-bottom: 1rem; /* Налаштовуйте відступ відповідно до потреб */
 }
 
-.middle-align {
-	vertical-align: middle;
-}
-
-
 .form-group label {
 	margin: 15px 0 0 0;
 }
@@ -4192,10 +4187,6 @@ input[type="button"],
 
 .button.primary.fit {
 	width: 40%;
-}
-
-.admin-td {
-	width: fit-content;
 }
 
 .admin-td .button.primary.small {

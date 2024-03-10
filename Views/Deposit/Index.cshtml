@@ -64,7 +64,7 @@
 		<div class="table-wrapper">
 			<table class="alt">
 				<thead>
-					<tr>
+					<tr style="font-size: 18pt">
 						@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
 						{
 							<td rowspan="2" class="text-center">
@@ -78,7 +78,7 @@
 						<th rowspan="2">Термін, міс</th>
 						<th colspan="2">Ставка річних</th>
 					</tr>
-					<tr style="font-size: 11pt">
+					<tr style="font-size: 12pt">
 						<th>Без дострокового закриття</th>
 						<th>З достроковим закриттям</th>
 					</tr>
@@ -89,18 +89,21 @@
 						<tr>
 							@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
 							{
-								<td class="admin-td">
+								<td class="admin-td text-center align-middle">
 									<a asp-controller="Deposit" asp-action="Edit" asp-route-id="@item.Id" class="button primary small">Змінити</a>
 									<a asp-controller="Deposit" asp-action="Delete" asp-route-id="@item.Id" class="button primary small">Видалити</a>
 								</td>
 							}
-							<td><b>@item.Title</b><br />@item.ShortDescription</td>
+							<td class="text-start">
+								<b> @item.Title</b><br />
+								@item.ShortDescription
+							</td>
 							<td>@ComposeReplenishmentString(item.Replenishment)</td>
 							<td>@item.GetInterestRateInString()</td>
 							<td>@ComposeTermString(item)</td>
 							<td>@ComposeRateClosureString(item.InterestRateNoEarlyClosure)</td>
 							<td>@ComposeRateClosureString(item.InterestRateEarlyClosure)</td>
-							<td class="middle-align">
+							<td class="align-middle">
 								<a asp-controller="UserDeposit" asp-action="OrderForm" asp-route-depositId="@item.Id" class="button small">Оформити</a>
 							</td>
 						</tr>
