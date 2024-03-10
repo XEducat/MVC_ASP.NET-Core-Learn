@@ -26,11 +26,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var app = builder.Build();
 
 // Filling the database with testing data
-if (args.Length == 1 && args[0].ToLower() == "seeddata")
-{
+//if (args.Length == 1 && args[0].ToLower() == "seeddata")
+//{
 	await Seed.SeedUsersAndRolesAsync(app);
 	Seed.Initialize(app);
-}
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

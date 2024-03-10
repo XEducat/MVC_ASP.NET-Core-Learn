@@ -177,7 +177,7 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.AppUser", b =>
@@ -283,7 +283,7 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Deposits");
+                    b.ToTable("Deposits", (string)null);
                 });
 
             modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.DepositTerm", b =>
@@ -304,7 +304,7 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
 
                     b.HasIndex("DepositId");
 
-                    b.ToTable("DepositTerms");
+                    b.ToTable("DepositTerms", (string)null);
                 });
 
             modelBuilder.Entity("MVC_ASP.NET_Core_Learn.Models.UserDeposit", b =>
@@ -344,7 +344,7 @@ namespace MVC_ASP.NET_Core_Learn.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDeposits");
+                    b.ToTable("UserDeposits", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
