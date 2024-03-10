@@ -67,10 +67,10 @@
 					<tr>
 						@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
 						{
-							<th rowspan="2" class="text-center">
+							<td rowspan="2" class="text-center">
+								<p class="mb-3">Взаємодія з шаблонами</p>
 								<a asp-controller="Deposit" asp-action="Create" class="btn btn-outline-success btn-lg">Додати шаблон</a>
-							</th>
-							<th rowspan="2">Опції колонки</th>
+							</td>
 						}
 						<th rowspan="2">Назва</th>
 						<th rowspan="2">Поповнення</th>
