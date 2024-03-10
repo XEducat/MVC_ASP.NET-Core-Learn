@@ -8,12 +8,10 @@
     </head>
     <body class="is-preload">
         @await Html.PartialAsync("HeaderPartial")
-        @* <div id="page-wrapper"> *@
-            @RenderBody()
 
-            @await Html.PartialAsync("FooterPartial")
-        @* </div> *@
+        @RenderBody()
 
+        @await Html.PartialAsync("FooterPartial")
         @await Html.PartialAsync("ScriptsPartial")
     </body>
 </html>
