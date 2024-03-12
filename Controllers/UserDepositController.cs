@@ -64,6 +64,9 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             if (deposit == null)
                 return RedirectToAction("Error", "Home"); // Якщо депозита не знайдено
 
+            // TODO: Зробити нормальний звязок термінів з депозитами,
+            // для прив`язки UserDeposit до Deposit
+
             // Створюємо новий об'єкт UserDeposit з даними з viewModel
             var userDeposit = new UserDeposit(deposit)
             {
@@ -73,7 +76,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
                 InterestRate = viewModel.InterestRate,
                 IsEarlyClosureAllowed = viewModel.IsEarlyClosureAllowed,
                 SelectedTerm = viewModel.SelectedTerm,
-            };
+				CreatedDate = DateTime.Now,
+			};
 
             // Додаємо userDeposit до контексту даних і зберігаємо зміни
             _context.UserDeposits.Add(userDeposit);

@@ -34,6 +34,8 @@ namespace MVC_ASP.NET_Core_Learn.Models
             Deposit = deposit;
             DepositId = deposit.Id;
             Title = deposit.Title;
-        }
+			ShortDescription = deposit.ShortDescription;
+            InterestPayment = deposit.InterestPayment;
+		}
     }
 }
