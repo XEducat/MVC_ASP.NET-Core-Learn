@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Deposit>
+﻿@using MVC_ASP.NET_Core_Learn.Data.Extensions
+@model IEnumerable<Deposit>
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -99,7 +100,7 @@
 								@item.ShortDescription
 							</td>
 							<td>@ComposeReplenishmentString(item.Replenishment)</td>
-							<td>@item.GetInterestRateInString()</td>
+							<td>@item.InterestPayment.GetDescription()</td>
 							<td>@ComposeTermString(item)</td>
 							<td>@ComposeRateClosureString(item.InterestRateNoEarlyClosure)</td>
 							<td>@ComposeRateClosureString(item.InterestRateEarlyClosure)</td>
