@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MVC_ASP.NET_Core_Learn.Data;
-using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
+using MVC_ASP.NET_Core_Learn.Data.Interfaces;
 using MVC_ASP.NET_Core_Learn.Models;
 
 namespace MVC_ASP.NET_Core_Learn.Repository

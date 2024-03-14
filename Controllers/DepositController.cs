@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
+using MVC_ASP.NET_Core_Learn.Data.Interfaces;
 using MVC_ASP.NET_Core_Learn.Models;
 using MVC_ASP.NET_Core_Learn.ViewModels;
 

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_ASP.NET_Core_Learn.Data;
-using MVC_ASP.NET_Core_Learn.Data.Iterfaces;
+using MVC_ASP.NET_Core_Learn.Data.Interfaces;
 using MVC_ASP.NET_Core_Learn.Models;
+using MVC_ASP.NET_Core_Learn.Repository;
 using MVC_ASP.NET_Core_Learn.ViewModels;
 
 namespace MVC_ASP.NET_Core_Learn.Controllers
@@ -16,14 +17,14 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
     public class UserDepositController : Controller
     {
         private readonly IDepositRepository _depositRepository;
-        private readonly AppDbContext _context; // TODO: Додати IUserDepositRepository
+        private readonly IUserDepositRepository _userDepositRepository;
         private readonly UserManager<AppUser> _userManager;
 
-        public UserDepositController(IDepositRepository depositRepository, UserManager<AppUser> userManager, AppDbContext context)
+        public UserDepositController(IDepositRepository depositRepository, UserManager<AppUser> userManager, IUserDepositRepository userDepositRepository)
         {
             _depositRepository = depositRepository;
             _userManager = userManager;
-            _context = context;
+			_userDepositRepository = userDepositRepository;
         }
 
         [HttpGet("Open/{depositId}")]
@@ -79,9 +80,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 				CreatedDate = DateTime.Now,
 			};
 
-            // Додаємо userDeposit до контексту даних і зберігаємо зміни
-            _context.UserDeposits.Add(userDeposit);
-            await _context.SaveChangesAsync();
+			// Додаємо userDeposit до контексту даних і зберігаємо зміни
+			_userDepositRepository.Add(userDeposit);
 
             // Перенаправляємо користувача на головну
             return RedirectToAction("Index", "Home");
@@ -94,7 +94,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 			var currentUser = await _userManager.GetUserAsync(User);
 
             // Дістаємо його депозити
-			IEnumerable<UserDeposit> userDeposits = await _context.UserDeposits.Where(ud => ud.UserId == currentUser.Id) .ToListAsync();
+            IEnumerable<UserDeposit> userDeposits = await _userDepositRepository.GetByUserIdAsync(currentUser.Id);
 
 			return View(userDeposits);
         }
