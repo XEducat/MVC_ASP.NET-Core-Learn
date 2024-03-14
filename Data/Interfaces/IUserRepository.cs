@@ -2,14 +2,8 @@
 
 namespace MVC_ASP.NET_Core_Learn.Data.Interfaces
 {
-    public interface IUserRepository
-    {
-        Task<IEnumerable<AppUser>> GetAllUsers();
-        Task<AppUser> GetUserById(string Id);
-
-        bool Add(AppUser user);
-        bool Update(AppUser user);
-        bool Delete(AppUser user);
-        bool Save();
-    }
+	public interface IUserRepository : IBaseRepository<AppUser>
+	{
+		Task<AppUser> GetUserById(string Id);
+	}
 }

@@ -14,7 +14,7 @@ namespace MVC_ASP.NET_Core_Learn.Repository
 			_context = appDbContext;
 		}
 
-		public async Task<IEnumerable<AppUser>> GetAllUsers()
+		public async Task<IEnumerable<AppUser>> GetAll()
 		{
 			return await _context.Users.ToListAsync();
 		}

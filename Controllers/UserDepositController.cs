@@ -94,7 +94,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 			var currentUser = await _userManager.GetUserAsync(User);
 
             // Дістаємо його депозити
-            IEnumerable<UserDeposit> userDeposits = await _userDepositRepository.GetByUserIdAsync(currentUser.Id);
+            IEnumerable<UserDeposit> userDeposits = await _userDepositRepository.GetDepositsByUserIdAsync(currentUser.Id);
 
 			return View(userDeposits);
         }
