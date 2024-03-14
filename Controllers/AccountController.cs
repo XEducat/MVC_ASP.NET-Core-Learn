@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MVC_ASP.NET_Core_Learn.Data;
 using MVC_ASP.NET_Core_Learn.Data.Enums;
 using MVC_ASP.NET_Core_Learn.Models;
 using MVC_ASP.NET_Core_Learn.ViewModels;
@@ -11,15 +11,12 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly SignInManager<AppUser> _signInManager;
-		private readonly AppDbContext _context;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context)
+		public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
-			_context = context;
 			_userManager = userManager;
 			_signInManager = signInManager;
 		}
-
 
         public IActionResult Login()
 		{
@@ -64,7 +61,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if (!ModelState.IsValid) return View(registerViewModel);
@@ -99,13 +96,32 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
 
             await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-            return RedirectToAction("Index", "Deposit");
+            return RedirectToAction(nameof(Login));
         }
 
+		[Authorize]
 		public async Task<IActionResult> LogOut()
 		{
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-    }
+
+		[Authorize]
+		public async Task<IActionResult> Delete()
+		{
+			// Беремо поточного юзера
+			var currentUser = await _userManager.GetUserAsync(User);
+
+			// Після цього видалення користувача може бути проведено як зазвичай
+			var deletedUserResponse = await _userManager.DeleteAsync(currentUser);
+
+			if (!deletedUserResponse.Succeeded)
+			{
+				TempData["Error"] = deletedUserResponse.Errors.First().Description;
+				return View("Error");
+			}
+
+			return RedirectToAction(nameof(LogOut));
+		}
+	}
 }
