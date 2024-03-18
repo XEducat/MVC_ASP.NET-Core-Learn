@@ -88,15 +88,23 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
-			if (!newUserResponse.Succeeded)
+			if (newUserResponse.Succeeded)
 			{
-                TempData["Error"] = newUserResponse.Errors.First().Description;
-                return View(registerViewModel);
-            }
+				await _userManager.AddToRoleAsync(newUser, UserRoles.User);
 
+				var loginVM = new LoginViewModel()
+				{
+					EmailAddress = registerViewModel.EmailAddress,
+					Password = registerViewModel.Password,
+				};
 
-            await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-            return RedirectToAction(nameof(Login));
+				return await Login(loginVM);
+			}
+			else
+			{
+				TempData["Error"] = newUserResponse.Errors.First().Description;
+				return View(registerViewModel);
+			}
         }
 
 		[Authorize]

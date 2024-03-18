@@ -131,7 +131,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 				_depositRepository.Delete(userDeposit);
 			}
 
-			return View("Index");
+			return RedirectToAction("Index");
 		}
     }
 }
