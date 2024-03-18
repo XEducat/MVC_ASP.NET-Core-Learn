@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC_ASP.NET_Core_Learn.Models;
+using MVC_ASP.NET_Core_Learn.ViewModels;
 using System.Diagnostics;
 
 namespace MVC_ASP.NET_Core_Learn.Controllers
