@@ -22,7 +22,7 @@ namespace MVC_ASP.NET_Core_Learn.Models
         public string ShortDescription { get; set; } // Короткий опис депозиту
 		public InterestPayment InterestPayment { get; set; } // Виплата процентів
 		public decimal Amount { get; set; } // Сума депозита
-        public int? SelectedTerm { get; set; } // Термін депозиту
+        public int SelectedTerm { get; set; } // Термін депозиту
         public double? InterestRate { get; set; } // Вибрана процентна ставка
         public bool IsEarlyClosureAllowed { get; set; } // Ставка може раніше закриватися чи ні
         public DateTime CreatedDate { get; set; }

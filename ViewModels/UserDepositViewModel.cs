@@ -16,7 +16,7 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
 
         [Display(Name = "Обраний термін")]
         [Required(ErrorMessage = "Ви не обрали термін депозиту")]
-        public int? SelectedTerm { get; set; }
+        public int SelectedTerm { get; set; }
 
         [Display(Name = "Процентна ставка")]
         [Required(ErrorMessage = "Ви не обрали процентну ставку")]

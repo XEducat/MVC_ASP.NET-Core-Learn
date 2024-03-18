@@ -65,9 +65,6 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             if (deposit == null)
                 return RedirectToAction("Error", "Home"); // Якщо депозита не знайдено
 
-            // TODO: Зробити нормальний звязок термінів з депозитами,
-            // для прив`язки UserDeposit до Deposit
-
             // Створюємо новий об'єкт UserDeposit з даними з viewModel
             var userDeposit = new UserDeposit(deposit)
             {
