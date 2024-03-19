@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Поповнення депозиту";
+    var userDepositTitle = ViewBag?.SelectedDepositTitle;
+    var userDepositId = @ViewBag?.UserDepositId;
+}
+
+
+<div id="main" class="wrapper style1">
+    <header class="major">
+        <h2>Поповнення «@userDepositTitle»</h2>
+    </header>
+
+    <!-- Передача данних (Айді депозиту та сума поповнення) -->
+    <form asp-action="ReplenishmentDeposit" method="post" class="align-center">
+        <input type="hidden" name="Id" value="@userDepositId">
+        <label for="amount"><h3>Сума для поповнення</h3></label>
+        <div style="margin-left: 50px">
+            <input type="number" id="amount" name="replenishmentAmount">
+            <span class="mx-2">UAH</span>
+        </div>
+
+        <button type="submit" class="button primary mt-4">Поповнити</button>
+    </form>
+</div>
