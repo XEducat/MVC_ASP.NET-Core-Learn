@@ -26,7 +26,7 @@ namespace MVC_ASP.NET_Core_Learn.Repository
 
 		public async Task<IEnumerable<UserDeposit>> GetDepositsByUserIdAsync(string UserId)
 		{
-			return await _context.UserDeposits.Where(ud => ud.UserId == UserId).ToListAsync();
+			return await _context.UserDeposits.Where(ud => ud.UserId == UserId).Include(d => d.Deposit).ToListAsync();
 		}
 
 
