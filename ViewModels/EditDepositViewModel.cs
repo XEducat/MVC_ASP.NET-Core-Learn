@@ -20,7 +20,7 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
         public InterestPayment InterestRate { get; set; }
 
         [Display(Name = "Терміни депозиту")]
-        public List<DepositTerm> Term { get; set; }   // Термін депозиту, [не доступний для зміни адміном наразі]
+        public List<DepositTerm> Terms { get; set; }   // Термін депозиту, [не доступний для зміни адміном наразі]
 
         [Display(Name = "Ставка без дострокового закриття(Вводити числа, через символ '.')")]
         public double? InterestRateNoEarlyClosure { get; set; }

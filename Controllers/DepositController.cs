@@ -9,6 +9,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
     /// <summary>
     /// Контролер для управління шаблонами депозитів.
     /// </summary>
+    [Authorize]
     public class DepositController : Controller
 	{
 		private readonly IDepositRepository _depositRepository;
@@ -19,6 +20,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         }
 
         [HttpGet("Open")]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
 		{
 			IEnumerable<Deposit> deposits = await _depositRepository.GetAll();
@@ -28,7 +30,9 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var editVM = new EditDepositViewModel();
+
+            return View(editVM);
         }
 
         [HttpPost]
@@ -37,10 +41,10 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Failed to edit deposit");
-                return View("Create", depositVM);
+                return View(depositVM);
             }
 
-            if (depositVM.Term.Any(t => t.NumberMonths < 1))
+            if (depositVM.Terms.Any(t => t.NumberMonths < 1))
             {
                 TempData["Error"] = "Failed to add. Terms must be greatest than 0";
                 return View("Create", depositVM);
@@ -52,7 +56,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
                 ShortDescription = depositVM.ShortDescription,
                 Replenishment = depositVM.Replenishment,
                 InterestPayment = depositVM.InterestRate,
-                Terms = depositVM.Term,
+                Terms = depositVM.Terms,
                 InterestRateEarlyClosure = depositVM.InterestRateEarlyClosure,
                 InterestRateNoEarlyClosure = depositVM.InterestRateNoEarlyClosure,
             };
@@ -62,26 +66,25 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         }
 
         public async Task<IActionResult> Edit(int id)
-		{
-			var deposit = await _depositRepository.GetByIdAsync(id);
-			if (deposit == null) return View("Error");
-			var depositVM = new EditDepositViewModel()
-			{
-				Id = id,
-				Title = deposit.Title,
-				ShortDescription = deposit.ShortDescription,
-				Replenishment = deposit.Replenishment,
-				InterestRate = deposit.InterestPayment,
-				Term = deposit.Terms,
-				InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
-				InterestRateNoEarlyClosure = deposit.InterestRateNoEarlyClosure,
-			};
+        {
+            var deposit = await _depositRepository.GetByIdAsync(id);
+            if (deposit == null) return View("Error");
+            var depositVM = new EditDepositViewModel()
+            {
+                Id = id,
+                Title = deposit.Title,
+                ShortDescription = deposit.ShortDescription,
+                Replenishment = deposit.Replenishment,
+                InterestRate = deposit.InterestPayment,
+                Terms = deposit.Terms,
+                InterestRateEarlyClosure = deposit.InterestRateEarlyClosure,
+                InterestRateNoEarlyClosure = deposit.InterestRateNoEarlyClosure,
+            };
 
-			return View(depositVM);
-		}
+            return View(depositVM);
+        }
 
-		[HttpPost]
-        [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditDepositViewModel depositVM)
 		{
@@ -91,7 +94,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 				return View("Edit", depositVM);
 			}
 
-			if(depositVM.Term.Any(t => t.NumberMonths < 1))
+			if(depositVM.Terms.Any(t => t.NumberMonths < 1))
 			{
                 TempData["Error"] = "Failed to edit. Terms must be greatest than 0";
                 return View("Edit", depositVM);
@@ -108,7 +111,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 					ShortDescription = depositVM.ShortDescription,
 					Replenishment = depositVM.Replenishment,
 					InterestPayment = depositVM.InterestRate,
-					Terms = depositVM.Term,
+					Terms = depositVM.Terms,
 					InterestRateEarlyClosure = depositVM.InterestRateEarlyClosure,
 					InterestRateNoEarlyClosure = depositVM.InterestRateNoEarlyClosure,
 				};

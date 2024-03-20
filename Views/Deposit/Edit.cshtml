@@ -43,15 +43,15 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Term)
-                @for (int i = 0; i < Model.Term.Count; i++)
+                @Html.LabelFor(model => model.Terms)
+                @for (int i = 0; i < Model?.Terms.Count; i++)
                 {
                     <div>
-                        @Html.HiddenFor(model => model.Term[i].Id)
-                        @Html.TextBoxFor(model => model.Term[i].NumberMonths, new { @class = "form-control" })
+                        @Html.HiddenFor(model => model.Terms[i].Id)
+                        @Html.TextBoxFor(model => model.Terms[i].NumberMonths, new { @class = "form-control" })
                     </div>
                 }
-                @Html.ValidationMessageFor(model => model.Term, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Terms, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
