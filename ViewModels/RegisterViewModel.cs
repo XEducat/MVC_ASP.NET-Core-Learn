@@ -4,35 +4,36 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
 {
     public class RegisterViewModel
     {
-        [Display(Name = "Username")]
-        [Required(ErrorMessage = "Username is required")]
+        [Display(Name = "І'мя")]
+        [Required(ErrorMessage = "Не вказане іи'я")]
         public string UserName { get; set; }
 
-        [Display(Name = "Email addres")]
-        [Required(ErrorMessage = "Email addres is required")]
+        [Display(Name = "Пошта")]
+        [Required(ErrorMessage = "Не вказана електронна пошта")]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 
-        [Required]
+        [Display(Name = "Пароль")]
+        [Required(ErrorMessage = "Не вказаний пароль")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Confirm password")]
-        [Required(ErrorMessage = "Confrirm password is required")]
+        [Display(Name = "Підтвердження паролю")]
+        [Required(ErrorMessage = "Потрібно підтвердити пароль")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        [Compare("Password", ErrorMessage = "Паролі не співпадають")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "State")]
-        [Required(ErrorMessage = "State is required")]
+        [Display(Name = "Країна")]
+        [Required(ErrorMessage = "Не вказана країна")]
         public string State { get; set; }
 
-        [Display(Name = "City")]
-        [Required(ErrorMessage = "City is required")]
+        [Display(Name = "Місто")]
+        [Required(ErrorMessage = "Не вказане місто")]
         public string City { get; set; }
 
-        [Display(Name = "Street")]
-        [Required(ErrorMessage = "Street is required")]
+        [Display(Name = "Вулиця")]
+        [Required(ErrorMessage = "Не вказана вулиця")]
         public string Street { get; set; }
     }
 }

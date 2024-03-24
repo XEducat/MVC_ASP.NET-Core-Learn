@@ -1,0 +1,70 @@
+﻿@using MVC_ASP.NET_Core_Learn.ViewModels
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Реєстрація";
+}
+
+
+<p>
+    <h4 class="align-center">Створення нового акаунту</h4>
+</p>
+
+<form asp-action="Register">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="UserName" class="control-label"></label>
+        <input asp-for="UserName" class="form-control" placeholder="Введіть данні"/>
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EmailAddress" class="control-label"></label>
+        <input asp-for="EmailAddress" class="form-control" placeholder="Введіть данні" />
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="control-label"></label>
+        <div class="input-group">
+            <input asp-for="Password" class="form-control" placeholder="Введіть данні" />
+            <button type="button" class="btn btn-secondary" onclick="togglePasswordVisibility('Password')" id="togglePasswordBtn">
+                <i class="fa fa-eye"></i>
+            </button>
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword" class="control-label"></label>
+        <div class="input-group">
+            <input asp-for="ConfirmPassword" class="form-control" placeholder="Введіть данні" />
+            <button type="button" class="btn btn-secondary" onclick="togglePasswordVisibility('Password')" id="togglePasswordBtn">
+                <i class="fa fa-eye"></i>
+            </button>
+        </div>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <br/>
+    <div class="form-group">
+        <label asp-for="State" class="control-label"></label>
+        <input asp-for="State" class="form-control" placeholder="Введіть данні" />
+        <span asp-validation-for="State" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="City" class="control-label"></label>
+        <input asp-for="City" class="form-control" placeholder="Введіть данні" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Street" class="control-label"></label>
+        <input asp-for="Street" class="form-control" placeholder="Введіть данні" />
+        <span asp-validation-for="Street" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+        <button class="btn btn-success p-3 mt-4" type="submit" style="width:100%">Створити аккаунт</button>
+    </div>
+</form>

@@ -1,0 +1,53 @@
+﻿@using MVC_ASP.NET_Core_Learn.ViewModels
+@model AccountViewModel
+
+@{
+    ViewData["Title"] = "Вхід";
+
+    var isVisibleLoginTab = Model?.RegisterViewModel != null;
+}
+<div id="main" class="wrapper style1">
+    <div class="container" style="width:30%">
+        <div class="card rounded-5 bg-dark">
+
+            <div class="card-body ps-5 pe-4">
+                <div class="nav nav-pills nav-justified mb-3" role="tablist">
+                    <a class="nav-link @(!isVisibleLoginTab ? "active" : "")"
+                       id="tab-login"
+                       data-bs-toggle="pill"
+                       href="#pills-login"
+                       role="tab"
+                       aria-controls="pills-login"
+                       aria-selected="true">
+                        Вхід
+                    </a>
+                    <a class="nav-link @(isVisibleLoginTab ? "active" : "")"
+                       id="tab-register"
+                       data-bs-toggle="pill"
+                       href="#pills-register"
+                       role="tab"
+                       aria-controls="pills-register"
+                       aria-selected="false">
+                        Реєстрація
+                    </a>
+                </div>
+
+                <!-- TODO: Виправити зміну видимості паролю в наслідок використання HtmlFieldPrefix-->
+                <div class="tab-content">
+                    <div class="tab-pane fade @(!isVisibleLoginTab ? "show active" : "")" id="pills-login" role="tabpanel">
+                        @{
+                            ViewData.TemplateInfo.HtmlFieldPrefix = "l";
+                            await Html.RenderPartialAsync("_Login", Model?.LoginViewModel);
+                        }
+                    </div>
+                    <div class="tab-pane fade @(isVisibleLoginTab ? "show active" : "")" id="pills-register" role="tabpanel">
+                        @{
+                            ViewData.TemplateInfo.HtmlFieldPrefix = "r";
+                            await Html.RenderPartialAsync("_Register", Model?.RegisterViewModel);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

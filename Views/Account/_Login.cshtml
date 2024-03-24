@@ -1,0 +1,35 @@
+﻿@using MVC_ASP.NET_Core_Learn.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Вхід";
+}
+
+
+<form asp-action="Login">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="EmailAddress" class="control-label"></label>
+        <input asp-for="EmailAddress" class="form-control" placeholder="Введіть данні">
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="control-label"></label>
+        <div class="input-group">
+            <input asp-for="Password" class="form-control" placeholder="Ваш пароль"/>
+            <button type="button" class="btn btn-secondary" onclick="togglePasswordVisibility('Password')" id="togglePasswordBtn">
+                <i class="fa fa-eye"></i>
+            </button>
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <br/>
+
+    @if(ViewBag.Error != null){
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="form-group">
+        <button class="btn btn-primary p-3" type="submit" style="width:100%">Ввійти</button>
+    </div>
+</form>

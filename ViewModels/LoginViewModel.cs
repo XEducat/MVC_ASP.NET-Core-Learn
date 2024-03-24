@@ -4,13 +4,14 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
 {
     public class LoginViewModel
     {
-        [Display(Name = "Email Address")]
+        [Display(Name = "Пошта")]
 		[EmailAddress]
-		[Required(ErrorMessage = "Email address is required")]
-		public string EmailAddress { get; set; }
+        [Required(ErrorMessage = "Поле обов'язкове")]
+        public string EmailAddress { get; set; }
 
+        [Display(Name = "Пароль")]
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "Поле обов'язкове")]
         public string Password { get; set; }
     }
 }

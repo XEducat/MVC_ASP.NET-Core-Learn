@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC_ASP.NET_Core_Learn.Data;
@@ -21,7 +21,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-	.AddCookie();
+	.AddCookie(options => //CookieAuthenticationOptions
+	{
+		options.LoginPath = "/Account/Index";
+	});
 
 var app = builder.Build();
 

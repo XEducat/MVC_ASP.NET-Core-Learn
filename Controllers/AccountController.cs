@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_ASP.NET_Core_Learn.Data.Enums;
 using MVC_ASP.NET_Core_Learn.Models;
@@ -12,109 +11,122 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		private readonly UserManager<AppUser> _userManager;
 		private readonly SignInManager<AppUser> _signInManager;
 
-		public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
 			_userManager = userManager;
 			_signInManager = signInManager;
-		}
+        }
 
+        // КОСТЫЛЬ (перенаправление атруиббута Authorize почему-то работает только на /Account/Login)
+        [HttpGet]
         public IActionResult Login()
 		{
-			var responce = new LoginViewModel();
-			return View(responce);
+			return View("Index");
 		}
 
-		[HttpPost]
+        // TODO: Додати Login  та можливість входу за логіном
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
-		{
-			if(!ModelState.IsValid) return View(loginViewModel);
-
-			var user = await _userManager.FindByEmailAsync(loginViewModel.EmailAddress);
-
-			if (user != null)
-			{
-				// User if found, check password
-				var passwordCheck = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
-				if (passwordCheck)
-				{
-					// Password correct, sign in
-					var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
-					if (result.Succeeded)
-					{
-						return RedirectToAction("Index", "Home");
-					}
-				}
-				// Password is incorrect
-				TempData["Error"] = "Incorrect password. Please try again";
-				return View(loginViewModel);
-			}
-			// User not found
-			TempData["Error"] = "Wrong credentails. This user not found";
-			return View(loginViewModel);
-		}
-
-        public IActionResult Register()
+        public async Task<IActionResult> Login([Bind(Prefix = "l")] LoginViewModel model)
         {
-            var responce = new RegisterViewModel();
-            return View(responce);
+            if (!ModelState.IsValid)
+            {
+                return View("Index", new AccountViewModel() { LoginViewModel = model });
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.EmailAddress);
+
+            if (user != null)
+            {
+                if (await AuthetificationAsync(user, model.Password))
+                    return View("Index", "Home");
+            }
+            else
+            {
+                ViewBag.Error = "Wrong credentails. This user not found";
+            }
+
+            return View("Index", new AccountViewModel() { LoginViewModel = model });
+        }
+
+        private async Task<bool> AuthetificationAsync(AppUser user, string password)
+        {
+            // User if found, check password
+            var passwordCheck = await _userManager.CheckPasswordAsync(user, password);
+            if (passwordCheck)
+            {
+                // Password correct, sign in
+                var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
+                return result.Succeeded;
+            }
+            else
+            {
+                // Password is incorrect
+                ViewBag.Error = "Incorrect password. Please try again";
+            }
+
+            return false;
         }
 
         [HttpPost]
-		[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([Bind(Prefix = "r")] RegisterViewModel model)
         {
-            if (!ModelState.IsValid) return View(registerViewModel);
+            if (!ModelState.IsValid)
+            {
+                return View("Index", new AccountViewModel() { RegisterViewModel = model });
+            }
 
-            var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
+            var user = await _userManager.FindByEmailAsync(model.EmailAddress);
             if (user != null)
             {
                 // We have an existing account
-                TempData["Error"] = "This email address is already in use";
-                return View(registerViewModel);
+                ViewBag.Error = "This email address is already in use";
+                return View("Index", new AccountViewModel() { RegisterViewModel = model });
             }
 
-			var newUser = new AppUser()
-			{
-                UserName = registerViewModel.UserName,
-                Email  = registerViewModel.EmailAddress,
-				Address = new Address() 
-				{
-					City = registerViewModel.City,
-					State = registerViewModel.State,
-					Street = registerViewModel.Street
+            var newUser = new AppUser()
+            {
+                UserName = model.UserName,
+                Email = model.EmailAddress,
+                Address = new Address()
+                {
+                    City = model.City,
+                    State = model.State,
+                    Street = model.Street
                 }
             };
 
-            var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+            var newUserResponse = await _userManager.CreateAsync(newUser, model.Password);
 
-			if (newUserResponse.Succeeded)
-			{
-				await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+            if (newUserResponse.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+                if (await AuthetificationAsync(newUser, model.Password))
+                {
+                    return View("Index", "Home");
+                } 
+                else
+                {
+                    ViewBag.Error = "User not auto Authentificated";
+                }
+            }
+            else
+            {
+                ViewBag.Error = newUserResponse.Errors.First().Description;
+            }
 
-				var loginVM = new LoginViewModel()
-				{
-					EmailAddress = registerViewModel.EmailAddress,
-					Password = registerViewModel.Password,
-				};
-
-				return await Login(loginVM);
-			}
-			else
-			{
-				TempData["Error"] = newUserResponse.Errors.First().Description;
-				return View(registerViewModel);
-			}
+            return View("Index", new AccountViewModel() { RegisterViewModel = model });
         }
 
-		[Authorize]
+        //[Authorize]
 		public async Task<IActionResult> LogOut()
 		{
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
-		[Authorize]
+		//[Authorize]
 		public async Task<IActionResult> Delete()
 		{
 			// Беремо поточного юзера
