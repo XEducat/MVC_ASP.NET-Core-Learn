@@ -25,22 +25,22 @@ namespace MVC_ASP.NET_Core_Learn.Data
 				{
 					new Deposit
 					{
-						Title = "Депозит 1",
-						ShortDescription = "Короткий опис депозиту 1",
+						Title = "Стандарт",
+						ShortDescription = "класичний вклад на обраний строк з можливістю поповнення та щомісячними %",
 						Replenishment = true,
-						InterestPayment = InterestPayment.WhenReturning,
+						InterestPayment = InterestPayment.Monthly,
 						Terms = new List<DepositTerm>
 						{
-							new DepositTerm { NumberMonths = 12 },
+							new DepositTerm { NumberMonths = 18 },
 							new DepositTerm { NumberMonths = 24 }
 						},
-						InterestRateNoEarlyClosure = 4.0,
-						InterestRateEarlyClosure = 4.5
+						InterestRateNoEarlyClosure = 13,
+						InterestRateEarlyClosure = null
 					},
 					new Deposit
 					{
-						Title = "Депозит 2",
-						ShortDescription = "Короткий опис депозиту 2",
+						Title = "Джуніор",
+						ShortDescription = "заощадження на майбутнє дитини",
 						Replenishment = false,
 						InterestPayment = InterestPayment.Monthly,
 						Terms = new List<DepositTerm>
@@ -53,8 +53,8 @@ namespace MVC_ASP.NET_Core_Learn.Data
 					},
 					new Deposit
 					{
-						Title = "Депозит 3",
-						ShortDescription = "Короткий опис депозиту 3",
+						Title = "Слава Героям",
+						ShortDescription = "спеціальний вклад для героїчних захисників і захисниць України",
 						Replenishment = true,
 						InterestPayment = InterestPayment.Monthly,
 						Terms = new List<DepositTerm>
@@ -67,8 +67,8 @@ namespace MVC_ASP.NET_Core_Learn.Data
 					},
 					new Deposit
 					{
-						Title = "Депозит 4",
-						ShortDescription = "Короткий опис депозиту 4",
+						Title = "Вільний",
+						ShortDescription = "вільне поповнення та зняття коштів у будь-який день після дати відкриття вкладу",
 						Replenishment = false,
 						InterestPayment = InterestPayment.WhenReturning,
 						Terms = new List<DepositTerm>
@@ -77,13 +77,13 @@ namespace MVC_ASP.NET_Core_Learn.Data
 							new DepositTerm { NumberMonths = 12 },
 							new DepositTerm { NumberMonths = 24 }
 						},
-						InterestRateNoEarlyClosure = 3.0,
-						InterestRateEarlyClosure = 3.5
+						InterestRateNoEarlyClosure = null,
+						InterestRateEarlyClosure = 2.5
 					},
 					new Deposit
 					{
-						Title = "Депозит 5",
-						ShortDescription = "Короткий опис депозиту 5",
+						Title = "Послуга накопичення «Скарбничка»",
+						ShortDescription = "простий сервіс накопичень, зручні варіанти поповнення з картки",
 						Replenishment = true,
 						InterestPayment = InterestPayment.Monthly,
 						Terms = new List<DepositTerm>
