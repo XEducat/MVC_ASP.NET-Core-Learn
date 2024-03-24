@@ -4,28 +4,29 @@
     ViewData["Title"] = "Оформлення депозиту";
 }
 
-
+<!-- TODO: Розділити кроки на окремі Partial-->
 <div id="main" class="wrapper style1" style="display: block; justify-content: center; align-items: center; flex-direction: column;">
     <header class="major">
         <h2>Оформлення депозиту</h2>
     </header>
     <div class="container d-flex justify-content-center" style="width:50%">
         <form method="post" onsubmit="updateTermsJson()">
-            <!-- Передача данних депозиту (прихована для користувача) -->
             <div>
-                <input type="hidden" asp-for="DepositId" />
-                <input type="hidden" asp-for="Title" />
-                <input type="hidden" asp-for="Deposit.Id" />
-                <input type="hidden" asp-for="Deposit.Replenishment" />
-                <input type="hidden" asp-for="Deposit.InterestRateEarlyClosure" />
-                <input type="hidden" asp-for="Deposit.InterestRateNoEarlyClosure" />
-                <input type="hidden" asp-for="Deposit.ShortDescription" />
-                <input type="hidden" asp-for="Deposit.Title" />
+                <!-- Передача даних депозиту (прихована для користувача)-->
+                @Html.HiddenFor(model => model.DepositId)
+                @Html.HiddenFor(model => model.Title)
+                @Html.HiddenFor(model => model.Deposit.Id)
+                @Html.HiddenFor(model => model.Deposit.Replenishment)
+                @Html.HiddenFor(model => model.Deposit.InterestRateEarlyClosure)
+                @Html.HiddenFor(model => model.Deposit.InterestRateNoEarlyClosure)
+                @Html.HiddenFor(model => model.Deposit.ShortDescription)
+                @Html.HiddenFor(model => model.Deposit.Title)
+
                 <!-- Передача термінів депозиту -->
-                @for (int i = 0; i < Model.Deposit.Terms.Count; i++)
+                @foreach (var term in Model.Deposit.Terms)
                 {
-                    <input type="hidden" name="Deposit.Terms[@i].Id" value="@Model.Deposit.Terms[i].Id" />
-                    <input type="hidden" name="Deposit.Terms[@i].NumberMonths" value="@Model.Deposit.Terms[i].NumberMonths" />
+                    <input type="hidden" name="Deposit.Terms[@term.Id].Id" value="@term.Id" />
+                    <input type="hidden" name="Deposit.Terms[@term.Id].NumberMonths" value="@term.NumberMonths" />
                 }
             </div>
 
@@ -34,7 +35,7 @@
                 <h3>Крок 1: Основна інформація</h3>
 
                 <!-- Вибір ставки -->
-                <h4>Выберите ставку и условия договора:</h4>
+                <h4>Виберіть ставку та умови договору:</h4>
                 <span asp-validation-for="InterestRate" class="text-danger"></span>
                 @if (Model.Deposit.InterestRateNoEarlyClosure != null)
                 {
@@ -52,10 +53,15 @@
                         <label for="depositEarlyClosure">@Model.Deposit.InterestRateEarlyClosure% річних<br /> для вклада з досрочним розірванням</label>
                     </div>
                 }
+                <!-- Дані, сформовані при виборі ставки -->
+                @Html.HiddenFor(model => model.InterestRate)
+                @Html.HiddenFor(model => model.IsEarlyClosureAllowed)
 
-                <!-- Данні сформовані на виборі ставки-->
-                <input type="hidden" asp-for="InterestRate" />
-                <input type="hidden" asp-for="IsEarlyClosureAllowed" />
+                <!-- Навігаційні кнопки -->
+                <div class="d-flex justify-content-center">
+                    <a asp-controller="Deposit" asp-action="Index" class="button" style="margin-right: 10px;">До шаблонів</a>
+                    <p class="button" onclick="nextStage()">Далее</p>
+                </div>
             </section>
 
 
@@ -63,16 +69,14 @@
             <section id="stage2" class="stage" hidden>
                 <h3>Крок 2: Додаткова інформація</h3>
 
-                <!-- Поточний тариф та процентна ставка-->
+                <!-- Поточний тариф та процентна ставка -->
                 <div class="d-flex">
                     <label for="interestRateValue"><b>Назва:</b></label>
                     <span class="mx-2">@Model.Title</span>
-                     
                 </div>
                 <div class="d-flex">
                     <label for="interestRateValue"><b>Ставка: </b></label>
                     <span id="interestRateValue" class="mx-2"></span>
-                    @* <div id="interestRateValue" class="mx-2"></div> *@
                 </div>
                 <br />
 
@@ -103,20 +107,23 @@
                         <span class="mx-2">UAH</span>
                     </div>
                 </div>
+
+                <!-- Навігаційні кнопки -->
+                <div class="d-flex justify-content-center">
+                    <p class="button" onclick="prevStage()" style="margin-right: 10px;">Назад</p>
+                    <p class="button" onclick="nextStage()">Далее</p>
+                </div>
             </section>
 
             <section id="stage3" class="stage d-flex flex-column align-items-center" hidden>
                 <h3>Крок 3: Підтвердження</h3>
-                <button class="button primary" type="submit" id="submitButton">Отправить</button>
+                <!-- Навігаційні кнопки -->
+                <div class="d-flex justify-content-center">
+                    <p class="button" onclick="prevStage()" style="margin-right: 10px;">Назад</p>
+                    <button class="button primary" type="submit" id="submitButton">Отправить</button>
+                </div>
             </section>
-
-
         </form>
-    </div>
-    <!-- Навігаційні кнопки -->
-    <div class="d-flex justify-content-center">
-        <p class="button" onclick="prevStage()" style="margin-right: 10px;">Назад</p>
-        <p class="button" onclick="nextStage()">Далее</p>
     </div>
 </div>
 
