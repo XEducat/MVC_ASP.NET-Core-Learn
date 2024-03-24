@@ -7,11 +7,11 @@
         @Html.AntiForgeryToken()
     </head>
     <body class="is-preload">
-        @await Html.PartialAsync("Layouts/_HeaderPartial")
+        @await Html.PartialAsync("Partials/_HeaderPartial")
 
         @RenderBody()
 
-        @await Html.PartialAsync("Layouts/_FooterPartial")
+        @await Html.PartialAsync("Partials/_FooterPartial")
         @await Html.PartialAsync("Partials/_ScriptsPartial")
     </body>
 </html>
