@@ -1,4 +1,4 @@
-@import url("fontawesome-all.min.css");
+п»ї@import url("fontawesome-all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,100italic,300italic");
 
 
@@ -9,9 +9,9 @@
 */
 
 
-/* Для всіх скролльних елементів */
+/* пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
 ::-webkit-scrollbar {
-	width: 0; /* Змінюємо ширину скроллбара на 0 */
+	width: 0; /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 0 */
 }
 
 html, body, div, span, applet, object,
@@ -93,24 +93,24 @@ input, select, textarea {
 		background: #1c1d26;
 	}
 
-	body.is-preload *, body.is-preload *:before, body.is-preload *:after {
-		-moz-animation: none !important;
-		-webkit-animation: none !important;
-		-ms-animation: none !important;
-		animation: none !important;
-		-moz-transition: none !important;
-		-webkit-transition: none !important;
-		-ms-transition: none !important;
-		transition: none !important;
-	}
+		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
+			-moz-animation: none !important;
+			-webkit-animation: none !important;
+			-ms-animation: none !important;
+			animation: none !important;
+			-moz-transition: none !important;
+			-webkit-transition: none !important;
+			-ms-transition: none !important;
+			transition: none !important;
+		}
 
-	body, input, select, textarea {
-		color: rgba(255, 255, 255, 0.75);
-		font-family: "Roboto", Helvetica, sans-serif;
-		font-size: 15pt;
-		font-weight: 100;
-		line-height: 1.75em;
-	}
+body, input, select, textarea {
+	color: rgba(255, 255, 255, 0.75);
+	font-family: "Roboto", Helvetica, sans-serif;
+	font-size: 15pt;
+	font-weight: 100;
+	line-height: 1.75em;
+}
 
 	a {
 		-moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -650,7 +650,7 @@ input, select, textarea {
 		}
 
 		.container.small {
-			width: 35em;
+			width: 30em;
 		}
 
 		.container.medium {
@@ -2402,16 +2402,16 @@ select {
 
 input[type="date"] {
 	width: 25%;
-	min-width: fit-content; /* Встановлюємо мінімальну ширину, досить точну для розміщення вмісту */
+	min-width: fit-content; /* Г‚Г±ГІГ Г­Г®ГўГ«ГѕВєГ¬Г® Г¬ВіГ­ВіГ¬Г Г«ГјГ­Гі ГёГЁГ°ГЁГ­Гі, Г¤Г®Г±ГЁГІГј ГІГ®Г·Г­Гі Г¤Г«Гї Г°Г®Г§Г¬ВіГ№ГҐГ­Г­Гї ГўГ¬ВіГ±ГІГі */
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-	filter: invert(0.5); /* Змінюємо яскравість значка */
+	filter: invert(0.5); /* Г‡Г¬ВіГ­ГѕВєГ¬Г® ГїГ±ГЄГ°Г ГўВіГ±ГІГј Г§Г­Г Г·ГЄГ  */
 }
 
 
 .text-danger {
-	color: red; /* Устанавливаем красный цвет текста */
+	color: red; /* Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЄГ°Г Г±Г­Г»Г© Г¶ГўГҐГІ ГІГҐГЄГ±ГІГ  */
 }
 /* Box */
 .box {
@@ -3241,9 +3241,11 @@ input[type="button"],
 
 /* Wrapper */
 
-	.wrapper {
-		padding: 6em 0 4em 0;
-	}
+.wrapper {
+	flex: 1; /* Р—Р°РЅРёРјР°РµС‚ РІСЃРµ РґРѕСЃС‚СѓРїРЅРѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ */
+	min-height: 80vh; /* РњРёРЅРёРјР°Р»СЊРЅР°СЏ РІС‹СЃРѕС‚Р° РєРѕРЅС‚РµРЅС‚Р° 70% РІС‹СЃРѕС‚С‹ СЌРєСЂР°РЅР° */
+	padding: 6em 0 4em 0;
+}
 
 		.wrapper.style2 {
 			background: #e44c65;
@@ -3414,9 +3416,12 @@ input[type="button"],
 
 /* Header */
 
-	#page-wrapper {
-		padding-top: 3.5em;
-	}
+#page-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* РњРёРЅРёРјР°Р»СЊРЅР°СЏ РІС‹СЃРѕС‚Р° РєРѕРЅС‚РµР№РЅРµСЂР° РЅР° РІРµСЃСЊ СЌРєСЂР°РЅ */
+	/*padding-top: 3.5em;*/
+}
 
 	#header {
 		background: rgba(39, 40, 51, 0.965);
@@ -3491,6 +3496,7 @@ input[type="button"],
 		box-shadow: none;
 		position: absolute;
 	}
+
 
 /* Banner */
 
@@ -3576,11 +3582,11 @@ input[type="button"],
 
 /* Footer */
 
-	#footer {
-		background: #272833;
-		padding: 6em 0;
-		text-align: center;
-	}
+#footer {
+	background: #272833;
+	padding: 5vh 0;
+	text-align: center;
+}
 
 		#footer .icons .icon.alt {
 			text-decoration: none;
@@ -3670,9 +3676,10 @@ input[type="button"],
 
 		/* Wrapper */
 
-			.wrapper {
-				padding: 4.5em 0 2.5em 0;
-			}
+		.wrapper {
+			min-height: 100vh;
+			padding: 4.5em 0 2.5em 0;
+		}
 
 		/* Dropotron */
 
@@ -4158,7 +4165,7 @@ input[type="button"],
 
 	/*EDIT*/
 .pb-3 {
-	padding-bottom: 1rem; /* Налаштовуйте відступ відповідно до потреб */
+	padding-bottom: 1rem; /* ГЌГ Г«Г ГёГІГ®ГўГіГ©ГІГҐ ГўВіГ¤Г±ГІГіГЇ ГўВіГ¤ГЇГ®ГўВіГ¤Г­Г® Г¤Г® ГЇГ®ГІГ°ГҐГЎ */
 }
 
 .form-group label {
@@ -4175,11 +4182,11 @@ input[type="button"],
 }
 
 .form-group {
-	width: 100%; /* Ширина елементів форми на повну ширину контейнера форми */
+	width: 100%; /* ГГЁГ°ГЁГ­Г  ГҐГ«ГҐГ¬ГҐГ­ГІВіГў ГґГ®Г°Г¬ГЁ Г­Г  ГЇГ®ГўГ­Гі ГёГЁГ°ГЁГ­Гі ГЄГ®Г­ГІГҐГ©Г­ГҐГ°Г  ГґГ®Г°Г¬ГЁ */
 }
 
 .registation-form {
-	width: 60%; /* або будь-який інший розмір, який ви вважаєте за потрібне */
+	width: 60%; /* Г ГЎГ® ГЎГіГ¤Гј-ГїГЄГЁГ© ВіГ­ГёГЁГ© Г°Г®Г§Г¬ВіГ°, ГїГЄГЁГ© ГўГЁ ГўГўГ Г¦Г ВєГІГҐ Г§Г  ГЇГ®ГІГ°ВіГЎГ­ГҐ */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
