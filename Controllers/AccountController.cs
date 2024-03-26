@@ -19,7 +19,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
         // КОСТЫЛЬ (перенаправление атруиббута Authorize почему-то работает только на /Account/Login)
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult login()
 		{
 			return View("Index");
 		}
@@ -27,7 +27,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         // TODO: Додати Login  та можливість входу за логіном
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind(Prefix = "l")] LoginViewModel model)
+        public async Task<IActionResult> Login(/*[Bind(Prefix = "l")]*/ LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -39,7 +39,9 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             if (user != null)
             {
                 if (await AuthetificationAsync(user, model.Password))
-                    return View("Index", "Home");
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             else
             {
@@ -70,7 +72,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind(Prefix = "r")] RegisterViewModel model)
+        public async Task<IActionResult> Register(/*[Bind(Prefix = "r")]*/ RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -104,7 +106,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 if (await AuthetificationAsync(newUser, model.Password))
                 {
-                    return View("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 } 
                 else
                 {

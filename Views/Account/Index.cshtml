@@ -6,8 +6,8 @@
 
     var isVisibleLoginTab = Model?.RegisterViewModel != null;
 }
-<div id="main" class="wrapper style1">
-    <div class="container" style="width:30%">
+<div id="main" class="wrapper style1 d-flex justify-content-center align-items-center">
+    <div class="container small">
         <div class="card rounded-5 bg-dark">
 
             <div class="card-body ps-5 pe-4">
@@ -36,13 +36,13 @@
                 <div class="tab-content">
                     <div class="tab-pane fade @(!isVisibleLoginTab ? "show active" : "")" id="pills-login" role="tabpanel">
                         @{
-                            ViewData.TemplateInfo.HtmlFieldPrefix = "l";
+                            // ViewData.TemplateInfo.HtmlFieldPrefix = "l";
                             await Html.RenderPartialAsync("_Login", Model?.LoginViewModel);
                         }
                     </div>
                     <div class="tab-pane fade @(isVisibleLoginTab ? "show active" : "")" id="pills-register" role="tabpanel">
                         @{
-                            ViewData.TemplateInfo.HtmlFieldPrefix = "r";
+                            // ViewData.TemplateInfo.HtmlFieldPrefix = "r";
                             await Html.RenderPartialAsync("_Register", Model?.RegisterViewModel);
                         }
                     </div>
