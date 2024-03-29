@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_ASP.NET_Core_Learn.Data.Enums;
 using MVC_ASP.NET_Core_Learn.Models;
@@ -121,15 +122,15 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             return View("Index", new AccountViewModel() { RegisterViewModel = model });
         }
 
-        //[Authorize]
-		public async Task<IActionResult> LogOut()
+        [Authorize]
+        public async Task<IActionResult> LogOut()
 		{
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
-		//[Authorize]
-		public async Task<IActionResult> Delete()
+        [Authorize]
+        public async Task<IActionResult> Delete()
 		{
 			// Беремо поточного юзера
 			var currentUser = await _userManager.GetUserAsync(User);
