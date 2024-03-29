@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IDepositRepository, DepositRepository>();
+builder.Services.AddScoped<IDepositRepository, DepositTemplateRepository>();
 builder.Services.AddScoped<IUserDepositRepository, UserDepositRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

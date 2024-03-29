@@ -15,7 +15,7 @@ namespace MVC_ASP.NET_Core_Learn.Models
 
         // Зв`язок с депозитом
         public int DepositId { get; set; }
-        public Deposit Deposit { get; set; }
+        public DepositTemplate Deposit { get; set; }
 
         // Інформація про депозит користувача
         public string Title { get; set; } // Назва депозита
@@ -29,7 +29,7 @@ namespace MVC_ASP.NET_Core_Learn.Models
 
         public UserDeposit() { }
 
-        public UserDeposit(Deposit deposit)
+        public UserDeposit(DepositTemplate deposit)
         {
             Deposit = deposit;
             DepositId = deposit.Id;

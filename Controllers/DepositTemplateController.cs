@@ -10,11 +10,11 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
     /// Контролер для управління шаблонами депозитів.
     /// </summary>
     [Authorize]
-    public class DepositController : Controller
+    public class DepositTemplateController : Controller
 	{
 		private readonly IDepositRepository _depositRepository;
 
-        public DepositController(IDepositRepository depositRepository)
+        public DepositTemplateController(IDepositRepository depositRepository)
 		{
 			_depositRepository = depositRepository;
         }
@@ -23,7 +23,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
 		{
-			IEnumerable<Deposit> deposits = await _depositRepository.GetAll();
+			IEnumerable<DepositTemplate> deposits = await _depositRepository.GetAll();
 
 			return View(deposits);
 		}
@@ -50,7 +50,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
                 return View("Create", depositVM);
             }
 
-            var deposit = new Deposit()
+            var deposit = new DepositTemplate()
             {
                 Title = depositVM.Title,
                 ShortDescription = depositVM.ShortDescription,
@@ -104,7 +104,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 
 			if (userDeposit != null)
 			{
-				var deposit = new Deposit()
+				var deposit = new DepositTemplate()
 				{
 					Id = id,
 					Title = depositVM.Title,

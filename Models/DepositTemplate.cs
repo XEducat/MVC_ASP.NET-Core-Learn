@@ -5,7 +5,7 @@ using MVC_ASP.NET_Core_Learn.Data.Enums;
 
 namespace MVC_ASP.NET_Core_Learn.Models
 {
-    public class Deposit
+    public class DepositTemplate
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }                          // Айді

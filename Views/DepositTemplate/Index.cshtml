@@ -1,5 +1,5 @@
 ﻿@using MVC_ASP.NET_Core_Learn.Data.Extensions
-@model IEnumerable<Deposit>
+@model IEnumerable<DepositTemplate>
 
 @{
 	ViewData["Title"] = "Пропозиції";
@@ -13,7 +13,7 @@
 	}
 
 	// Формує строку термінів
-	string ComposeTermString(Deposit deposit)
+	string ComposeTermString(DepositTemplate deposit)
 	{
 		var terms = deposit.Terms.Select(t => t.NumberMonths.ToString());
 
@@ -72,7 +72,7 @@
 						{
 							<td rowspan="2" class="text-center">
 								<p class="mb-3">Взаємодія з шаблонами</p>
-								<a asp-controller="Deposit" asp-action="Create" class="btn btn-outline-success btn-lg">Додати шаблон</a>
+								<a asp-controller="DepositTemplate" asp-action="Create" class="btn btn-outline-success btn-lg">Додати шаблон</a>
 							</td>
 						}
 						<th rowspan="2">Назва</th>
@@ -93,8 +93,8 @@
 							@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
 							{
 								<td class="admin-td text-center align-middle">
-									<a asp-controller="Deposit" asp-action="Edit" asp-route-id="@item.Id" class="button primary small">Змінити</a>
-									<a asp-controller="Deposit" asp-action="Delete" asp-route-id="@item.Id" class="button primary small">Видалити</a>
+									<a asp-controller="DepositTemplate" asp-action="Edit" asp-route-id="@item.Id" class="button primary small">Змінити</a>
+									<a asp-controller="DepositTemplate" asp-action="Delete" asp-route-id="@item.Id" class="button primary small">Видалити</a>
 								</td>
 							}
 							<td class="text-start">

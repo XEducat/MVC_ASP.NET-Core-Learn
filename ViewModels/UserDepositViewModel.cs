@@ -26,6 +26,6 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
         public bool IsEarlyClosureAllowed { get; set; }
 
         public int DepositId { get; set; }
-        public Deposit Deposit { get; set; }
+        public DepositTemplate Deposit { get; set; }
     }
 }

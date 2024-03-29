@@ -14,16 +14,16 @@ namespace MVC_ASP.NET_Core_Learn.Data
 				var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
 				context.Database.Migrate(); // Убедимся, что база данных создана
 
-				if (context.Deposits.Any())
+				if (context.DepositTemplates.Any())
 				{
 					// База данных уже заполнена, поэтому не нужно ничего делать
 					return;
 				}
 
                 // Начальные данные для депозитов
-                var seedDeposits = new List<Deposit>
+                var seedDeposits = new List<DepositTemplate>
 				{
-					new Deposit
+					new DepositTemplate
 					{
 						Title = "Стандарт",
 						ShortDescription = "класичний вклад на обраний строк з можливістю поповнення та щомісячними %",
@@ -37,7 +37,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						InterestRateNoEarlyClosure = 13,
 						InterestRateEarlyClosure = null
 					},
-					new Deposit
+					new DepositTemplate
 					{
 						Title = "Джуніор",
 						ShortDescription = "заощадження на майбутнє дитини",
@@ -51,7 +51,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						InterestRateNoEarlyClosure = null,
 						InterestRateEarlyClosure = 5.0
 					},
-					new Deposit
+					new DepositTemplate
 					{
 						Title = "Слава Героям",
 						ShortDescription = "спеціальний вклад для героїчних захисників і захисниць України",
@@ -65,7 +65,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						InterestRateNoEarlyClosure = 3.5,
 						InterestRateEarlyClosure = 4.0
 					},
-					new Deposit
+					new DepositTemplate
 					{
 						Title = "Вільний",
 						ShortDescription = "вільне поповнення та зняття коштів у будь-який день після дати відкриття вкладу",
@@ -80,7 +80,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 						InterestRateNoEarlyClosure = null,
 						InterestRateEarlyClosure = 2.5
 					},
-					new Deposit
+					new DepositTemplate
 					{
 						Title = "Послуга накопичення «Скарбничка»",
 						ShortDescription = "простий сервіс накопичень, зручні варіанти поповнення з картки",
@@ -98,7 +98,7 @@ namespace MVC_ASP.NET_Core_Learn.Data
 				};
 
 				// Добавляем начальные данные в базу данных
-				context.Deposits.AddRange(seedDeposits);
+				context.DepositTemplates.AddRange(seedDeposits);
 				context.SaveChanges();
 			}
 		}

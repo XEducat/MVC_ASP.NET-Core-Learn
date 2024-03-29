@@ -2,8 +2,8 @@
 
 namespace MVC_ASP.NET_Core_Learn.Data.Interfaces
 {
-	public interface IDepositRepository : IBaseRepository<Deposit>
+	public interface IDepositRepository : IBaseRepository<DepositTemplate>
 	{
-		Task<Deposit> GetByIdAsyncNoTraking(int Id);
+		Task<DepositTemplate> GetByIdAsyncNoTraking(int Id);
 	}
 }
