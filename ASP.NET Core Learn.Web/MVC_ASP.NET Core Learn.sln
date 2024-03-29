@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_ASP.NET Core Learn", "MVC_ASP.NET Core Learn.csproj", "{4806A334-9C0C-4292-AB23-B6E40CD8E08B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_ASP.NET_CoreLearn.Web", "MVC_ASP.NET_CoreLearn.Web.csproj", "{4806A334-9C0C-4292-AB23-B6E40CD8E08B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_ASP.NET_CoreLearn.Tests", "..\ASP.NET Core Learn.Tests\MVC_ASP.NET_CoreLearn.Tests.csproj", "{7572CE4E-C6AF-4AB0-B979-A308835BB827}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4806A334-9C0C-4292-AB23-B6E40CD8E08B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4806A334-9C0C-4292-AB23-B6E40CD8E08B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4806A334-9C0C-4292-AB23-B6E40CD8E08B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7572CE4E-C6AF-4AB0-B979-A308835BB827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7572CE4E-C6AF-4AB0-B979-A308835BB827}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7572CE4E-C6AF-4AB0-B979-A308835BB827}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7572CE4E-C6AF-4AB0-B979-A308835BB827}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

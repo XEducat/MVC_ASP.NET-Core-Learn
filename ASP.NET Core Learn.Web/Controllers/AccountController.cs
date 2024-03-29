@@ -143,7 +143,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 				return View("Error");
 			}
 
-			return RedirectToAction(nameof(LogOut));
-		}
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
 	}
 }
