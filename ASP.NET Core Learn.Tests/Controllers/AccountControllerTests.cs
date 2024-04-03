@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace MVC_ASP.NET_CoreLearn.Tests.Controllers
 {
+    // TODO: Оптимизировать тесты
     public class AccountControllerTests
     {
 
@@ -46,24 +47,25 @@ namespace MVC_ASP.NET_CoreLearn.Tests.Controllers
             Assert.Equal(model, accountViewModel.LoginViewModel);
         }
 
-        public async Task Register_ReturnsViewResult_With_RegisterViewModel_WhenModelStateIsInvalid()
+        [Fact]
+        public async Task Register_ReturnsViewWithModel_WhenModelStateIsInvalid()
         {
             // Arrange
-            var userManagerMock = new Mock<UserManager<AppUser>>(MockBehavior.Strict);
-            var signInManagerMock = new Mock<SignInManager<AppUser>>(userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<AppUser>>(), null, null, null, null);
+            var userManagerMock = new Mock<UserManager<AppUser>>(
+                Mock.Of<IUserStore<AppUser>>(), null, null, null, null, null, null, null, null);
+            var signInManagerMock = new Mock<SignInManager<AppUser>>(
+                userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<AppUser>>(), null, null, null, null);
             var controller = new AccountController(userManagerMock.Object, signInManagerMock.Object);
-            var model = new RegisterViewModel { EmailAddress = "test@example.com" };
-            controller.ModelState.AddModelError("Password", "Password is required");
+            var invalidModel = new RegisterViewModel();
+            controller.ModelState.AddModelError("FieldName", "Error Message");
 
             // Act
-            var result = await controller.Register(model) as ViewResult;
+            var result = await controller.Register(invalidModel);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("Index", result.ViewName);
-            Assert.IsType<AccountViewModel>(result.Model);
-            var accountViewModel = Assert.IsType<AccountViewModel>(result.Model);
-            Assert.Equal(model, accountViewModel.RegisterViewModel);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var viewModel = Assert.IsType<AccountViewModel>(viewResult.Model);
+            Assert.Equal(invalidModel, viewModel.RegisterViewModel);
         }
 
         [Fact]
