@@ -13,7 +13,7 @@
 		<div class="d-flex flex-wrap justify-content-center">
 			@foreach (var userDeposit in Model)
 			{
-				<div class="card rounded-3 border border-secondary text-white bg-dark" style="width: 24rem; margin: 30px;">
+				<div class="card rounded-3 border border-secondary text-white bg-dark" style="width: 26rem; margin: 30px;">
 					<div class="card-body text-center">
 						<h4 class="card-title">@userDeposit.Title</h4>
 						@* <p class="card-text">@deposit.ShortDescription</p> *@
@@ -28,10 +28,16 @@
 						<div class="text-center">
 							@if (userDeposit.Deposit.Replenishment == true)
 							{
-								<a asp-action="ReplenishmentDeposit" asp-route-id="@userDeposit.Id" class="button small">Поповнити</a>
+								<a asp-action="ReplenishmentDeposit" asp-route-id="@userDeposit.Id" class="button small">
+									<i class="fas fa-coins"></i>
+									Поповнити
+								</a>
 							}
 
-							<a href="#" class="button small">Детальніше</a>
+							<a asp-action="Detail" asp-route-id="@userDeposit.Id" class="button small">
+								<i class="fas fa-money-check-alt"></i>
+								Детальніше
+							</a>
 						</div>
 @* 						<div class="mx-4 my-2">
 							<h5 class="text-muted">@deposit.CreatedDate.ToString("dd/MM/yyyy")</h5>
