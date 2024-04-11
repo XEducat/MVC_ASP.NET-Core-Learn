@@ -119,5 +119,12 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             // Перенаправте користувача на іншу сторінку або відобразіть повідомлення про успішне поповнення
             return RedirectToAction("All");
         }
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            var selectedUserDeposit = await _userDepositRepository.GetByIdAsync(id);
+
+            return View(selectedUserDeposit);
+        }
     }
 }

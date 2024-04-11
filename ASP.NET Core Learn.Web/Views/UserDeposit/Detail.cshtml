@@ -1,0 +1,73 @@
+﻿@model UserDeposit
+@{
+    ViewData["Title"] = "Деталі деопзиту";
+}
+@{
+    decimal amount = Model.Amount;
+    int numberOfMonth = Model.SelectedTerm;
+    decimal[] monthlyPayments = new decimal[numberOfMonth];
+    decimal monthlyInterestRate = (decimal)Model.InterestRate / 12 / 100;
+
+    // Генерація місяців на основі CreatedDate
+    DateTime startDate = Model.CreatedDate;
+    List<string> monthLabels = new List<string>();
+    for (int i = 0; i < numberOfMonth; i++)
+    {
+        DateTime nextMonth = startDate.AddMonths(i);
+        monthLabels.Add(nextMonth.ToString("MMMM yyyy"));
+    }
+
+    // Обчислення суми на кожному місяці
+    for (int i = 0; i < numberOfMonth; i++)
+    {
+        decimal monthlyInterest = amount * monthlyInterestRate;
+        decimal tax = monthlyInterest * 0.195m; // 19.5% податок, якщо це ваша ставка
+        decimal netInterest = monthlyInterest - tax;
+        amount += netInterest;
+        monthlyPayments[i] = Math.Round(amount, 2); // Скруглення до однієї сотої
+    }
+}
+
+<div id="main" class="wrapper style1">
+    <header class="major">
+        <h2>Деталі депозиту</h2>
+    </header>
+    <div class="container">
+        <canvas id="depositChart" width="400" height="100"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('depositChart').getContext('2d');
+    var currentMonth = @((DateTime.Now.Year - startDate.Year) * 12 + DateTime.Now.Month - startDate.Month);
+
+    var backgroundColors = [];
+    var borderColors = [];
+    for (var i = 0; i < @numberOfMonth; i++) {
+        backgroundColors.push(i === currentMonth ? 'rgba(75, 192, 192, 0.2)' : 'rgba(54, 162, 235, 0.2)');
+        borderColors.push(i === currentMonth ? 'rgba(75, 192, 192, 1)' : 'rgba(54, 162, 235, 1)');
+    }
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(monthLabels)),
+            datasets: [{
+                label: 'Сума',
+                data: @Html.Raw(Json.Serialize(monthlyPayments)),
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+

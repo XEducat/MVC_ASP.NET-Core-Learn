@@ -20,7 +20,7 @@ namespace MVC_ASP.NET_Core_Learn.ViewModels
 
         [Display(Name = "Процентна ставка")]
         [Required(ErrorMessage = "Ви не обрали процентну ставку")]
-        public double? InterestRate { get; set; }
+        public double InterestRate { get; set; }
 
         [Display(Name = "Дозвіл на дострокове закриття")]
         public bool IsEarlyClosureAllowed { get; set; }
