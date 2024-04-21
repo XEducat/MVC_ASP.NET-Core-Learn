@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_ASP.NET_Core_Learn.Data.Enums;
 using MVC_ASP.NET_Core_Learn.Models;
+using MVC_ASP.NET_Core_Learn.Services;
 using MVC_ASP.NET_Core_Learn.ViewModels;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MVC_ASP.NET_Core_Learn.Controllers
 {
@@ -11,11 +17,13 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly SignInManager<AppUser> _signInManager;
+        private readonly ApiService _apiService;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApiService apiService)
         {
 			_userManager = userManager;
 			_signInManager = signInManager;
+            _apiService = apiService;
         }
 
         // КОСТЫЛЬ (перенаправление атруиббута Authorize почему-то работает только на /Account/Login)
@@ -26,31 +34,79 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		}
 
         // TODO: Додати Login  та можливість входу за логіном
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(/*[Bind(Prefix = "l")]*/ LoginViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View("Index", new AccountViewModel() { LoginViewModel = model });
+        //    }
+
+        //    var user = await _userManager.FindByEmailAsync(model.EmailAddress);
+
+        //    if (user != null)
+        //    {
+        //        if (await AuthetificationAsync(user, model.Password))
+        //        {
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Error = "Wrong credentails. This user not found";
+        //    }
+
+        //    return View("Index", new AccountViewModel() { LoginViewModel = model });
+        //}
+
+        // TODO:
+        // 1. Сделать нормальную обработку ошибок для сайта.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(/*[Bind(Prefix = "l")]*/ LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View("Index", new AccountViewModel() { LoginViewModel = model });
             }
 
-            var user = await _userManager.FindByEmailAsync(model.EmailAddress);
-
-            if (user != null)
+            try
             {
-                if (await AuthetificationAsync(user, model.Password))
+                // Вызываем метод API для аутентификации
+                var response = await _apiService.Login(model.Username, model.Password);
+
+                if (response != null)
                 {
+                    // Добавляем токен в куки
+                    Response.Cookies.Append("access_cookie", response.Token, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = DateTime.UtcNow.AddHours(response.Expires) // Устанавливаем срок действия токена
+                    });
+
+                    // Успешная аутентификация, перенаправляем пользователя на главную страницу
                     return RedirectToAction("Index", "Home");
                 }
+                else
+                {
+                    // Если аутентификация не удалась, устанавливаем соответствующее сообщение об ошибке
+                    ViewBag.Error = "Wrong credentials. This user not found";
+                    return View("Index", new AccountViewModel() { LoginViewModel = model });
+                }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                ViewBag.Error = "Wrong credentails. This user not found";
+                ViewBag.Error = ex.Message;
+                return View("Index", new AccountViewModel() { LoginViewModel = model });
             }
-
-            return View("Index", new AccountViewModel() { LoginViewModel = model });
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex;
+                return RedirectToAction("Error", "Home"); // Якщо депозита не знайдено
+            }
         }
+
 
         private async Task<bool> AuthetificationAsync(AppUser user, string password)
         {
@@ -125,7 +181,10 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         [Authorize]
         public async Task<IActionResult> LogOut()
 		{
+            // #CANBETRASH
             await _signInManager.SignOutAsync();
+
+            Response.Cookies.Delete("access_cookie");
             return RedirectToAction("Index", "Home");
         }
 

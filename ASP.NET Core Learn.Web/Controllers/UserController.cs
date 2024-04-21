@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_ASP.NET_Core_Learn.Models;
 using MVC_ASP.NET_Core_Learn.ViewModels;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace MVC_ASP.NET_Core_Learn.Controllers
 {
@@ -19,7 +21,9 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         [Authorize]
         public async Task<IActionResult> About()
         {
-            var user = await _userManager.GetUserAsync(User);
+            // Получаем пользователя за именем
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByNameAsync(userName);
 
             if (user == null)
             {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MVC_ASP.NET_Core_Learn.Data.Interfaces;
 using MVC_ASP.NET_Core_Learn.Models;
 using MVC_ASP.NET_Core_Learn.ViewModels;
+using System.Security.Claims;
 
 namespace MVC_ASP.NET_Core_Learn.Controllers
 {
@@ -54,7 +55,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             if (!ModelState.IsValid)
                 return View(nameof(OrderForm), viewModel);
 
-            var currentUser = await _userManager.GetUserAsync(User);
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _userManager.FindByNameAsync(userName);
             if (currentUser == null)
                 return RedirectToAction("Error", "Home"); // Якщо користувача не знайдено
 
@@ -85,7 +87,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         public async Task<IActionResult> All()
 		{
             // Беремо поточного юзера
-			var currentUser = await _userManager.GetUserAsync(User);
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _userManager.FindByNameAsync(userName);
 
             // Дістаємо його депозити
             IEnumerable<UserDeposit> userDeposits = await _userDepositRepository.GetDepositsByUserIdAsync(currentUser.Id);

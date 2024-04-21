@@ -34,7 +34,7 @@ namespace MVC_ASP.NET_CoreLearn.Tests.Controllers
                                                                         Mock.Of<IUserClaimsPrincipalFactory<AppUser>>(),
                                                                         null, null, null, null);
             var controller = new AccountController(userManagerMock.Object, signInManagerMock.Object);
-            var model = new LoginViewModel { EmailAddress = "test@example.com", Password = "password" };
+            var model = new LoginViewModel { Username = "test@example.com", Password = "password" };
 
             // Act
             var result = await controller.Login(model) as ViewResult;
