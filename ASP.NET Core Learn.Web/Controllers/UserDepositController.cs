@@ -15,15 +15,19 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
     {
         private readonly IDepositRepository _depositRepository;
         private readonly IUserDepositRepository _userDepositRepository;
+        private readonly IUserRepository _userRepository;
         private readonly UserManager<AppUser> _userManager;
 
-        public UserDepositController(IDepositRepository depositRepository, UserManager<AppUser> userManager, IUserDepositRepository userDepositRepository)
+        public UserDepositController(IDepositRepository depositRepository, IUserDepositRepository userDepositRepository, IUserRepository userRepository, UserManager<AppUser> userManager)
         {
             _depositRepository = depositRepository;
             _userManager = userManager;
 			_userDepositRepository = userDepositRepository;
+            _userRepository = userRepository;
         }
 
+
+        // TODO: Зробити зберігання заповнених данних
         [HttpGet("Open/{depositId}")]
         public async Task<IActionResult> OrderForm(int depositId)
         {
@@ -62,6 +66,13 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
             if (deposit == null)
                 return RedirectToAction("Error", "Home"); // Якщо депозита не знайдено
 
+            if(currentUser.Balance < viewModel.Amount)
+            {
+                string returnUrl = Url.Action("OrderForm", "UserDeposit", new { viewModel });
+                return RedirectToAction("ReplenishBalance", "User", new { recommendedAmount = viewModel.Amount - currentUser.Balance, returnUrl}); // Якщо не вистачає грошей на балансі
+            }
+
+
             // Створюємо новий об'єкт UserDeposit з даними з viewModel
             var userDeposit = new UserDeposit(deposit)
             {
@@ -74,8 +85,9 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 				CreatedDate = DateTime.Now,
 			};
 
-			// Додаємо userDeposit до контексту даних і зберігаємо зміни
-			_userDepositRepository.Add(userDeposit);
+            // Знымаємо гроші з балансу та додаємо userDeposit в БД
+            await _userRepository.SubtractFromBalanceAsync(currentUser, viewModel.Amount);
+            _userDepositRepository.Add(userDeposit);
 
             // Перенаправляємо користувача на головну
             return RedirectToAction("Index", "Home");

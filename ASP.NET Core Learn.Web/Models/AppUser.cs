@@ -10,7 +10,8 @@ namespace MVC_ASP.NET_Core_Learn.Models
 
 		[ForeignKey("Address")]
 		public int AddressId { get; set; }
-		public Address? Address { get; set; }
+		public decimal Balance { get; set; }
         public List<UserDeposit> Deposits { get; set; }
+        public Address? Address { get; set; }
     }
 }

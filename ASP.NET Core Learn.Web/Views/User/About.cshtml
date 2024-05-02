@@ -31,6 +31,13 @@
                 <div>
                     <p><b>Логін:</b> @Model.UserName</p>
                     <p><b>Пошта:</b> @Model.Email</p>
+
+                    <p>
+                        <b>Баланс:</b> @Model.Balance ₴
+                        <a class="btn btn-success" asp-action="ReplenishBalance">
+                            <i class="fas fa-coins"></i>
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>

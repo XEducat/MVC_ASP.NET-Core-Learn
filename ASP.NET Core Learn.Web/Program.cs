@@ -5,13 +5,18 @@ using MVC_ASP.NET_Core_Learn.Data;
 using MVC_ASP.NET_Core_Learn.Data.Interfaces;
 using MVC_ASP.NET_Core_Learn.Models;
 using MVC_ASP.NET_Core_Learn.Repository;
+using MVC_ASP.NET_Core_Learn.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDepositRepository, DepositTemplateRepository>();
 builder.Services.AddScoped<IUserDepositRepository, UserDepositRepository>();
+
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
