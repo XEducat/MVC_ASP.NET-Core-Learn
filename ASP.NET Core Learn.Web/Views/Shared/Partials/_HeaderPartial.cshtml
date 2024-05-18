@@ -1,4 +1,4 @@
-﻿ <!-- Header -->
+﻿ <!-- Header Partial -->
 <header id="header">
     <h1 id="logo">
         <a asp-controller="Home" asp-action="Index">StashSpot</a>
@@ -6,7 +6,7 @@
     </h1>
     <nav id="nav">
         <ul>
-            <li>
+@*             <li>
                 <a href="#">Layouts</a>
                 <ul>
                     <li><a href="left-sidebar.html">Left Sidebar</a></li>
@@ -22,16 +22,18 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
-            <li><a asp-controller="DepositTemplate" asp-action="Index">Deposits</a></li>
+            </li> *@
+            <li><a asp-controller="DepositTemplate" asp-action="Index">Депозити</a></li>
             @if (User.Identity.IsAuthenticated)
             {
-                <li><a asp-controller="UserDeposit" asp-action="All">Wallet</a></li>
-                <li><a asp-controller="User" asp-action="About" class="button">Profile</a></li>
+                <li><a asp-controller="UserDeposit" asp-action="All">Мої вкладення</a></li>
+                <li>
+                    <a asp-controller="User" asp-action="About" class="button">Профіль</a>
+                </li>
             }
             else
             {
-                <li><a asp-controller="Account" asp-action="Login" class="button">Sign In</a></li>
+                <li><a asp-controller="Account" asp-action="Login" class="button">Ввійти</a></li>
             }
         </ul>
     </nav>

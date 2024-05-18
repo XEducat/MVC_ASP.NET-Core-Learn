@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-footer mx-auto">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                        <a class="btn btn-danger" id="confirmDelete" asp-controller="Account" asp-action="Delete">Видалити</a>
+                        <a class="btn btn-primary" id="confirmDelete" asp-controller="Account" asp-action="Delete">Видалити</a>
                     </div>
                 </div>
             </div>
@@ -45,11 +45,13 @@
         <!-- Кнопки виходу/видалення для користувача -->
         <div class="d-flex justify-content-center">
             <div class="btn-group-vertical d-flex">
-                <a asp-controller="Account" asp-action="LogOut" class="btn btn-outline-primary mb-2 flex-fill">Log Out</a>
+                <a asp-controller="Account" asp-action="LogOut" class="btn btn-outline-primary mb-2 flex-fill">
+                    Вийти з аккаунту
+                </a>
 
                 <!-- Кнопка-триггер модального підтвердження видалення -->
                 <a class="btn btn-outline-light mb-2 flex-fill" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
-                    Delete Account
+                    Видалити аккаунт
                 </a>
             </div>
         </div>
