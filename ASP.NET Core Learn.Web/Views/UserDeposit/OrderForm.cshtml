@@ -11,24 +11,22 @@
     </header>
     <div class="container d-flex justify-content-center" style="width:50%">
         <form method="post" onsubmit="updateTermsJson()">
-            <div>
-                <!-- Передача даних депозиту (прихована для користувача)-->
-                @Html.HiddenFor(model => model.DepositId)
-                @Html.HiddenFor(model => model.Title)
-                @Html.HiddenFor(model => model.Deposit.Id)
-                @Html.HiddenFor(model => model.Deposit.Replenishment)
-                @Html.HiddenFor(model => model.Deposit.InterestRateEarlyClosure)
-                @Html.HiddenFor(model => model.Deposit.InterestRateNoEarlyClosure)
-                @Html.HiddenFor(model => model.Deposit.ShortDescription)
-                @Html.HiddenFor(model => model.Deposit.Title)
+            <!-- Передача даних депозиту (прихована для користувача)-->
+            @Html.HiddenFor(model => model.DepositId)
+            @Html.HiddenFor(model => model.Title)
+            @Html.HiddenFor(model => model.Deposit.Id)
+            @Html.HiddenFor(model => model.Deposit.Replenishment)
+            @Html.HiddenFor(model => model.Deposit.InterestRateEarlyClosure)
+            @Html.HiddenFor(model => model.Deposit.InterestRateNoEarlyClosure)
+            @Html.HiddenFor(model => model.Deposit.ShortDescription)
+            @Html.HiddenFor(model => model.Deposit.Title)
 
-                <!-- Передача термінів депозиту -->
-                @foreach (var term in Model.Deposit.Terms)
-                {
-                    <input type="hidden" name="Deposit.Terms[@term.Id].Id" value="@term.Id" />
-                    <input type="hidden" name="Deposit.Terms[@term.Id].NumberMonths" value="@term.NumberMonths" />
-                }
-            </div>
+            <!-- Передача термінів депозиту -->
+            @for (int i = 0; i < Model.Deposit.Terms.Count; i++)
+            {
+                <input type="hidden" name="Deposit.Terms[@i].Id" value="@Model.Deposit.Terms[i].Id" />
+                <input type="hidden" name="Deposit.Terms[@i].NumberMonths" value="@Model.Deposit.Terms[i].NumberMonths" />
+            }
 
             <!-- Перший етап -->
             <section id="stage1" class="stage">
@@ -42,7 +40,7 @@
                     <div>
                         <input type="radio" id="depositNoEarlyClosure" name="SelectedInterestRate"
                                value="@Model.Deposit.InterestRateNoEarlyClosure" onchange="updateSelectedRate(this)" />
-                        <label for="depositNoEarlyClosure">@Model.Deposit.InterestRateNoEarlyClosure% річних<br /> для вклада без досрочного розірвання</label>
+                        <label for="depositNoEarlyClosure">@Model.Deposit.InterestRateNoEarlyClosure% річних без досрочного розірвання</label>
                     </div>
                 }
                 @if (Model.Deposit.InterestRateEarlyClosure != null)
@@ -50,7 +48,7 @@
                     <div>
                         <input type="radio" id="depositEarlyClosure" name="SelectedInterestRate"
                                value="@Model.Deposit.InterestRateEarlyClosure" onchange="updateSelectedRate(this)" />
-                        <label for="depositEarlyClosure">@Model.Deposit.InterestRateEarlyClosure% річних<br /> для вклада з досрочним розірванням</label>
+                        <label for="depositEarlyClosure">@Model.Deposit.InterestRateEarlyClosure% річних з досрочним розірванням<br />(дострокове закриття за ставкою 0.01% річних)</label>
                     </div>
                 }
                 <!-- Дані, сформовані при виборі ставки -->
@@ -60,7 +58,7 @@
                 <!-- Навігаційні кнопки -->
                 <div class="d-flex justify-content-center">
                     <a asp-controller="DepositTemplate" asp-action="Index" class="button" style="margin-right: 10px;">До шаблонів</a>
-                    <p class="button" onclick="nextStage()">Далее</p>
+                    <p class="button" onclick="nextStage()">Далі</p>
                 </div>
             </section>
 
@@ -111,20 +109,36 @@
                 <!-- Навігаційні кнопки -->
                 <div class="d-flex justify-content-center">
                     <p class="button" onclick="prevStage()" style="margin-right: 10px;">Назад</p>
-                    <p class="button" onclick="nextStage()">Далее</p>
+                    <button class="button primary" type="submit" id="submitButton">Відправити</button>
                 </div>
             </section>
 
-            <section id="stage3" class="stage d-flex flex-column align-items-center" hidden>
+@*             <section id="stage3" class="stage d-flex flex-column align-items-center" hidden>
                 <h3>Крок 3: Підтвердження</h3>
                 <!-- Навігаційні кнопки -->
                 <div class="d-flex justify-content-center">
                     <p class="button" onclick="prevStage()" style="margin-right: 10px;">Назад</p>
                     <button class="button primary" type="submit" id="submitButton">Отправить</button>
                 </div>
-            </section>
+            </section> *@
         </form>
     </div>
+
+    @* TODO: Видалити або замінити переадресацію на модальне вікно
+        <!-- Модальне вікно -->
+    <div class="modal fade" id="insufficientFundsModal" tabindex="-1" aria-labelledby="insufficientFundsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-black mx-auto">
+                    На вашому рахунку недостатньо коштів для оформлення депозиту. Будь ласка, поповніть рахунок або поверніться до оформлення.
+                </div>
+                <div class="modal-footer mx-auto">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Повернутися до оформлення</button>
+                    <a class="btn btn-primary" id="confirmReplenish" asp-controller="User" asp-action="ReplenishBalance">Перейти до поповнення</a>
+                </div>
+            </div>
+        </div>
+    </div> *@
 </div>
 
 <script>
