@@ -3,6 +3,7 @@
 
 @{
 	ViewData["Title"] = "Мої депозити";
+	var a = TempData["DepositWithdrawn"];
 }
 
 <div id="main" class="wrapper style1">
@@ -10,6 +11,7 @@
         <header class="major">
             <h2>Ваші депозити</h2>
         </header>
+
 		<div class="d-flex flex-wrap justify-content-center">
 			@foreach (var userDeposit in Model)
 			{
@@ -19,21 +21,35 @@
 						@* <p class="card-text">@deposit.ShortDescription</p> *@
 					</div>
 					<ul class="list-group list-group-flush text-center">
-						<li class="list-group-item bg-dark text-white">@userDeposit.Amount грн</li>
+						<li class="list-group-item bg-dark text-white">
+							@userDeposit.Amount грн
+							@if (userDeposit.Deposit.Replenishment)
+							{
+								<a class="btn btn-success" asp-action="ReplenishmentDeposit" asp-route-id="@userDeposit.Id">
+									<i class="fas fa-coins"></i>
+								</a>
+							}
+						</li>
 						<li class="list-group-item bg-dark text-white">@userDeposit.SelectedTerm міс.</li>
 						<li class="list-group-item bg-dark text-white">@userDeposit.InterestPayment.GetDescription()</li>
 						<li class="list-group-item bg-dark text-white">@userDeposit.InterestRate%</li>
 					</ul>
 					<div class="card-body">
 						<div class="text-center">
-							@if (userDeposit.Deposit.Replenishment == true)
+							@if (userDeposit.IsEarlyClosureAllowed)
+							{
+								<a class="button small" asp-action="WithdrawDeposit" asp-route-id="@userDeposit.Id">
+									<i class="fas fa-coins"></i>
+									Зняти
+								</a>
+							}
+@* 							@if (userDeposit.Deposit.Replenishment)
 							{
 								<a asp-action="ReplenishmentDeposit" asp-route-id="@userDeposit.Id" class="button small">
 									<i class="fas fa-coins"></i>
 									Поповнити
 								</a>
-							}
-
+							} *@
 							<a asp-action="Detail" asp-route-id="@userDeposit.Id" class="button small">
 								<i class="fas fa-money-check-alt"></i>
 								Детальніше
@@ -46,6 +62,65 @@
 				</div>
 			}
 		</div>
+
+		<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body text-black mx-auto">
+						Кошти з вашого депозиту успішно нараховано на баланс.
+					</div>
+					<div class="modal-footer mx-auto">
+						<div class="progress-circle">
+							<div class="progress-circle-bar"></div>
+						</div>
+						<a class="btn btn-primary" asp-controller="User" asp-action="About">Переглянути баланс</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		@* TODO: Додати модальне вікно до зняття коштів з депозиту
+ 		<!-- Модальне підтвердження видалення -->
+		<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body text-black mx-auto">
+						Ви впевнені, що хочете зняти кошти з депозиту?(за ставкою 0.01% річних)
+					</div>
+					<div class="modal-footer mx-auto">
+						<form id="deleteForm" method="post" action="@Url.Action("WithdrawDeposit", "UserDeposit")">
+							<input type="hidden" name="Id" id="depositId" />
+							<button type="submit" class="btn btn-danger">Так</button>
+						</form>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ні</button>
+					</div>
+				</div>
+			</div>
+		</div> *@
     </div>
 </div>
 
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			var depositWithdrawn = @Html.Raw(Json.Serialize(TempData["DepositWithdrawn"]));
+			if (depositWithdrawn) {
+				$('#successModal').modal('show');
+			}
+
+			$('#successModal').on('shown.bs.modal', function () {
+				var animationDuration = 9	000; // 10 seconds
+
+				// Set the initial width of the progress bar
+				$('.progress-circle-bar').css('width', '100%');
+
+				setTimeout(function () {
+					// Animation completed, close modal
+					$('#successModal').modal('hide');
+				}, animationDuration);
+			});
+		});
+	</script>
+}

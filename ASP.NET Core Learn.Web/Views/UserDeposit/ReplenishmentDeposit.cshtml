@@ -12,6 +12,7 @@
 
     <!-- Передача данних (Айді депозиту та сума поповнення) -->
     <form asp-action="ReplenishmentDeposit" method="post" class="align-center">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <input type="hidden" name="Id" value="@userDepositId">
         <label for="amount"><h3>Сума для поповнення</h3></label>
         <div style="margin-left: 50px">

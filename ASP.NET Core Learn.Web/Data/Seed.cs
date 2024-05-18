@@ -106,59 +106,66 @@ namespace MVC_ASP.NET_Core_Learn.Data
 
 		public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
 		{
-			using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+			try
 			{
-				//Roles
-				var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-				if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
-					await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-				if (!await roleManager.RoleExistsAsync(UserRoles.User))
-					await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-
-				//Users
-				var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-				string adminUserEmail = "vadimSdeveloper@gmail.com";
-
-				var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
-				if (adminUser == null)
+				using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
 				{
-					var newAdminUser = new AppUser()
-					{
-						UserName = "vadimS",
-						Email = adminUserEmail,
-						EmailConfirmed = true,
-						Address = new Address()
-						{
-							Street = "123 Main St",
-							City = "Charlotte",
-							State = "NC"
-						}
-					};
-					await userManager.CreateAsync(newAdminUser, "Coding@1234?");
-					await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
-				}
+					//Roles
+					var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-				string appUserEmail = "user@etickets.com";
+					if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+						await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+					if (!await roleManager.RoleExistsAsync(UserRoles.User))
+						await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
-				var appUser = await userManager.FindByEmailAsync(appUserEmail);
-				if (appUser == null)
-				{
-					var newAppUser = new AppUser()
+					//Users
+					var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+					string adminUserEmail = "vadimSdeveloper@gmail.com";
+
+					var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
+					if (adminUser == null)
 					{
-						UserName = "app-user",
-						Email = appUserEmail,
-						EmailConfirmed = true,
-						Address = new Address()
+						var newAdminUser = new AppUser()
 						{
-							Street = "123 Main St",
-							City = "Charlotte",
-							State = "NC"
-						}
-					};
-					await userManager.CreateAsync(newAppUser, "Coding@1234?");
-					await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
+							UserName = "vadimS",
+							Email = adminUserEmail,
+							EmailConfirmed = true,
+							Address = new Address()
+							{
+								Street = "123 Main St",
+								City = "Charlotte",
+								State = "NC"
+							}
+						};
+						await userManager.CreateAsync(newAdminUser, "Coding@1234?");
+						await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+					}
+
+					string appUserEmail = "user@etickets.com";
+
+					var appUser = await userManager.FindByEmailAsync(appUserEmail);
+					if (appUser == null)
+					{
+						var newAppUser = new AppUser()
+						{
+							UserName = "app-user",
+							Email = appUserEmail,
+							EmailConfirmed = true,
+							Address = new Address()
+							{
+								Street = "123 Main St",
+								City = "Charlotte",
+								State = "NC"
+							}
+						};
+						await userManager.CreateAsync(newAppUser, "Coding@1234?");
+						await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
+					}
 				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Помилка при заповненні користувачів в БД(Seed):\n" + ex.Message);
 			}
 		}
 	}

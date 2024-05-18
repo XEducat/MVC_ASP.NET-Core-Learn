@@ -44,7 +44,8 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
         [HttpGet("replenishment")]
         public async Task<IActionResult> ReplenishBalance(decimal recommendedAmount = 0, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            //TODO: Видалити або доробити переадресацію назад на оформлення
+            //ViewData["ReturnUrl"] = returnUrl;
             return View(recommendedAmount);
         }
 

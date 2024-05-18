@@ -56,7 +56,7 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 		public async Task<IActionResult> OrderForm(UserDepositViewModel viewModel)
         {
             if (!ModelState.IsValid)
-                return View(nameof(OrderForm), viewModel);
+                return View(viewModel);
 
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
@@ -71,7 +71,12 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
                 string returnUrl = Url.Action("OrderForm", "UserDeposit", new { viewModel });
                 return RedirectToAction("ReplenishBalance", "User", new { recommendedAmount = viewModel.Amount - currentUser.Balance, returnUrl}); // Якщо не вистачає грошей на балансі
             }
-
+            ////TODO: Повернення сторінки з модальним вікном про нестачу балансу
+            //if (currentUser.Balance < viewModel.Amount)
+            //{
+            //    TempData["InsufficientFunds"] = true;
+            //    return View(viewModel);
+            //}
 
             // Створюємо новий об'єкт UserDeposit з даними з viewModel
             var userDeposit = new UserDeposit(deposit)
@@ -105,34 +110,67 @@ namespace MVC_ASP.NET_Core_Learn.Controllers
 			return View(userDeposits);
         }
 
-        [HttpGet]
+		// TODO: Зробити поповнення доступним лише при оформленні депозиту
+		[HttpGet]
         public async Task<IActionResult> ReplenishmentDeposit(int id)
         {
             var selectedUserDeposit = await _userDepositRepository.GetByIdAsync(id);
 
+            //TODO Перобити під модель
             // Передача необхідних данних депозиту в ViewBag
             ViewBag.UserDepositId = id; 
             ViewBag.SelectedDepositTitle = selectedUserDeposit.Title;
             return View();
         }
 
-        // TODO: Можливо варто додати дату останнього поповнення та винести дані в ViewModel
         [HttpPost]
         public async Task<IActionResult> ReplenishmentDeposit(decimal replenishmentAmount, int Id)
         {
             if (replenishmentAmount <= 0) return RedirectToAction("ReplenishmentDeposit");
 
-            var selectedUserDeposit = await _userDepositRepository.GetByIdAsync(Id);
+			// TODO: Переробити щоб прибрати дубляж коду
+			// Беремо поточного юзера
+			var currentUser = await _userManager.GetUserAsync(User);
+			if (currentUser == null)
+				return RedirectToAction("Error", "Home"); // Якщо користувача не знайдено
 
-            // Оновлення суму депозиту користувача, додаючи введену суму поповнення
-            selectedUserDeposit.Amount += replenishmentAmount;
+			var selectedUserDeposit = await _userDepositRepository.GetByIdAsync(Id);
+
+            if(currentUser.Balance < replenishmentAmount)
+            {
+				ModelState.AddModelError(string.Empty, "На вашому рахунку недостатньо коштів для поповнення.");
+                ViewBag.UserDepositId = Id;
+                ViewBag.SelectedDepositTitle = selectedUserDeposit.Title;
+                return View();
+			}
+
+			// Оновлення суму депозиту користувача, додаючи введену суму поповнення
+			await _userRepository.SubtractFromBalanceAsync(currentUser, replenishmentAmount);
+			selectedUserDeposit.Amount += replenishmentAmount;
             _userDepositRepository.Update(selectedUserDeposit);
 
-            // Перенаправте користувача на іншу сторінку або відобразіть повідомлення про успішне поповнення
-            return RedirectToAction("All");
+			// Перенаправте користувача на іншу сторінку або відобразіть повідомлення про успішне поповнення
+			return RedirectToAction("All");
         }
 
-        public async Task<IActionResult> Detail(int id)
+
+		public async Task<IActionResult> WithdrawDeposit(int Id)
+		{
+			var currentUser = await _userManager.GetUserAsync(User);
+			if (currentUser == null)
+				return RedirectToAction("Error", "Home"); // Якщо користувача не знайдено\
+			var selectedUserDeposit = await _userDepositRepository.GetByIdAsync(Id);
+
+			// Оновлення балансу користувача, видалення депозиту
+			await _userRepository.AddToBalanceAsync(currentUser, selectedUserDeposit.Amount);
+			_userDepositRepository.Delete(selectedUserDeposit);
+
+			// Встановлення значення ViewBag для показу модального вікна
+			TempData["DepositWithdrawn"] = true;
+			return RedirectToAction("All");
+		}
+
+		public async Task<IActionResult> Detail(int id)
         {
             var selectedUserDeposit = await _userDepositRepository.GetByIdAsync(id);
 
