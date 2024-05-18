@@ -13,5 +13,6 @@
 
         @await Html.PartialAsync("Partials/_FooterPartial")
         @await Html.PartialAsync("Partials/_ScriptsPartial")
+        @RenderSection("Scripts", required: false)
     </body>
 </html>

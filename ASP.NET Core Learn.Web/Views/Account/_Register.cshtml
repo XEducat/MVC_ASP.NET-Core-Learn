@@ -5,6 +5,12 @@
     ViewData["Title"] = "Реєстрація";
 }
 
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 
 <p>
     <h4 class="align-center">Створення нового акаунту</h4>
@@ -44,6 +50,12 @@
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
     <br/>
+
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <div>
+        Рух по мапі - Зажати ЛКМ та перетягти<br />
+        Вибір локації - Одне натискання ЛКМ
+    </div>
     <div class="form-group">
         <label asp-for="State" class="control-label"></label>
         <input asp-for="State" class="form-control" placeholder="Введіть данні" />
@@ -68,3 +80,44 @@
         <button class="btn btn-success p-3 mt-4" type="submit" style="width:100%">Створити аккаунт</button>
     </div>
 </form>
+
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 13); // Установіть початкові координати та масштаб карти
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxBounds: L.latLngBounds([[50, -1], [52, 1]]), // Встановіть границі карти
+        maxBoundsViscosity: 0.8 // "липкість" границ
+    }).addTo(map);
+
+    var marker;
+
+    function addMarker(e) {
+        if (!marker) {
+            marker = L.marker(e.latlng).addTo(map);
+        } else {
+            marker.setLatLng(e.latlng);
+        }
+
+        // Заповнюємо поля форми з відповідними значеннями
+        document.getElementById("City").value = ""; // Очищаємо поле City
+        document.getElementById("State").value = ""; // Очищаємо поле State
+        document.getElementById("Street").value = ""; // Очищаємо поле Street
+
+        var language = "uk";
+        // Запит до сервісу, який повертає адресу на основі географічних координат
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${e.latlng.lat}&lon=${e.latlng.lng}&accept-language=${language}`)
+            .then(response => response.json())
+            .then(data => {
+                let city = data.address.city || data.address.town || data.address.village || data.address.hamlet;
+                document.getElementById("City").value = city || ""; // Заповнюємо поле City, якщо воно доступне
+                document.getElementById("State").value = data.address.country || ""; // Заповнюємо поле State назвою країни
+                document.getElementById("Street").value = data.address.road || ""; // Заповнюємо поле Street, якщо воно доступне
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    map.on('click', addMarker); // Додайте маркер при кліку лівою кнопкою миші
+</script>
+
+
